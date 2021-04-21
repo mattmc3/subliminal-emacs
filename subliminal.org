@@ -1,0 +1,195 @@
+#+TITLE: Subliminal Emacs Config
+#+STARTUP: content
+#+PROPERTY: header-args:emacs-lisp :tangle yes :results output silent
+
+* Notes
+This is an org mode literate config. Use <TAB> to expand sections, and put Emacs lisp in source blocks.
+
+* Subliminal TODOs
+** TODO Add mini-map
+** TODO Add multiple cursor plugin
+** TODO Monokai theme
+** TODO Find/Replace shortcuts
+** TODO File tabs (centaur tabs)
+** TODO Frame geometry
+** TODO Save sessions
+
+* Setup
+We want to use packages, so let's get that configured
+
+#+begin_src emacs-lisp
+  (setq lexical-binding t)
+
+  (require 'package)
+
+  (setq package-enable-at-startup nil)
+  (setq max-lisp-eval-depth 2000)
+
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (add-to-list 'package-archives '("ublt" . "https://elpa.ubolonton.org/packages/") t)
+
+  (when (< emacs-major-version 27)
+    (package-initialize))
+
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (setq gc-cons-threshold 100000000)
+
+  ;;(use-package diminish :ensure t)
+
+  ;;(use-package exec-path-from-shell
+  ;;  :ensure t
+  ;;  :config
+  ;;  (setenv "SHELL" "/usr/local/bin/zsh")
+  ;;  (setq exec-path-from-shell-variables '("PATH"))
+  ;;  (exec-path-from-shell-initialize))
+#+end_src
+
+** Mac configuration
+On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
+#+begin_src emacs-lisp
+  (setq mac-option-key-is-meta t
+        mac-command-key-is-meta nil
+        mac-command-modifier 'super
+        mac-option-modifier 'meta)
+#+end_src
+
+** Settings to sort later
+#+begin_src emacs-lisp
+  ;; default to utf-8 for all the things
+  (set-charset-priority 'unicode)
+  (setq locale-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+  (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+
+  ;; write over selected text on input... like modern editors should
+  (delete-selection-mode t)
+
+  ;; Don't persist a custom file
+  (setq custom-file null-device)         ; use a temp file as a placeholder
+  (setq custom-safe-themes t)            ; mark all themes as safe, since we can't persist now
+  (setq enable-local-variables :all)     ; fix =defvar= warnings
+
+  ;; stop emacs from littering the file system with backup files
+  (setq make-backup-files nil
+  auto-save-default nil
+  create-lockfiles nil)
+#+end_src
+
+** Emacs editor style
+#+begin_src emacs-lisp
+  ;; I like my cursor to be a bar, not a blinking box
+  (setq-default cursor-type 'bar)
+
+  ;; let's not see the toolbar
+  (tool-bar-mode -1)
+
+  ;; turn off the splash screen
+  (setq inhibit-splash-screen t)
+
+  ;; set scrolling to be nicer
+  (setq scroll-margin 30)
+  (setq scroll-step 1)
+  (setq scroll-conservatively 10000)
+  (setq auto-window-vscroll nil)
+#+end_src
+
+* Org mode
+#+begin_src emacs-lisp
+  ;; https://emacs.stackexchange.com/questions/43656/make-c-s-up-handle-shift-selection-under-org-mode
+  (setq org-support-shift-select t
+  org-replace-disputed-keys t)
+  (eval-after-load "org"
+    '(progn
+       (define-key org-mode-map (kbd "<S-up>") nil)
+       (define-key org-mode-map (kbd "<S-down>") nil)
+       (define-key org-mode-map (kbd "<M-S-left>") nil)
+       (define-key org-mode-map (kbd "<M-S-right>") nil)
+       (define-key org-mode-map (kbd "<M-left>") nil)
+       (define-key org-mode-map (kbd "<M-right>") nil)
+       (define-key org-mode-map [C-S-up] 'org-shiftup)
+       (define-key org-mode-map [C-S-down] 'org-shiftdown)
+       (define-key org-mode-map [C-S-right] 'org-shiftmetaright)
+       (define-key org-mode-map [C-S-left] 'org-shiftmetaleft)
+       (define-key org-mode-map [C-right] 'org-metaright)
+       (define-key org-mode-map [C-left] 'org-metaleft)
+       (define-key org-mode-map [C-S-return] 'org-insert-todo-heading)
+       ))
+#+end_src
+
+* Subliminal
+** Subliminal keybingings (CUA mode-ish)
+#+begin_src emacs-lisp
+  ;; Now, let's set up the Mac for some better CUA support
+  ;; https://www.emacswiki.org/emacs/CuaMode - this isn't helpful on a Mac
+  ;; (cua-mode t) ;; this is the Windows way, but the Mac uses command keys, so let's manually set that up
+  ;; (global-set-key [(alt c)] 'kill-ring-save)
+  ;; (global-set-key [(alt v)] 'yank)
+  ;; (global-set-key [(alt x)] 'kill-region)
+  ;; https://osdn.net/projects/macwiki/svn/view/zenitani/CarbonEmacs/src/lisp/mac-key-mode.el?root=macwiki&view=markup
+  (global-set-key [(super up)] 'beginning-of-buffer)
+  (global-set-key [(super down)] 'end-of-buffer)
+  (global-set-key [(super left)] 'beginning-of-line)
+  (global-set-key [(super right)] 'end-of-line)
+  (global-set-key (kbd "s-s") 'save-buffer)
+  (global-set-key (kbd "s-a") 'mark-whole-buffer)
+  (global-set-key (kbd "s-z") 'undo)
+  (global-set-key (kbd "s-c") 'kill-ring-save)
+  (global-set-key (kbd "s-v") 'yank)
+  (global-set-key (kbd "s-x") 'kill-region)
+#+end_src
+
+** Subliminal default theme is Monokai
+#+begin_src emacs-lisp
+(use-package monokai-pro-theme
+  :ensure t
+  :config
+  (load-theme 'monokai-pro t))
+#+end_src
+
+* Packages
+** All the icons
+#+begin_src emacs-lisp
+  (use-package all-the-icons
+    :ensure t)
+#+end_src
+
+** Minimap
+#+begin_src emacs-lisp
+  (use-package minimap
+    :ensure t)
+  (minimap-mode)
+#+end_src
+
+** Centaur Tabs
+[[https://github.com/ema2159/centaur-tabs][Centaur Tabs]]
+#+begin_src emacs-lisp
+  (use-package centaur-tabs
+    :ensure t
+    :demand
+    :config
+  (setq centaur-tabs-style "bar"
+    centaur-tabs-height 24
+    centaur-tabs-set-icons t
+    centaur-tabs-set-modified-marker t
+    ; centaur-tabs-show-navigation-buttons t
+    centaur-tabs-gray-out-icons 'buffer
+    centaur-tabs-set-bar 'over
+          centaur-tabs-modified-marker "*"
+    x-underline-at-descent-line t)
+    (centaur-tabs-headline-match)
+    (centaur-tabs-mode t)
+    :bind
+    ("C-<prior>" . centaur-tabs-backward)
+    ("C-<next>" . centaur-tabs-forward))
+
+  ;;(setq centaur-tabs-gray-out-icons 'buffer)
+  ;;(setq centaur-tabs-style "slant")
+#+end_src

@@ -1,0 +1,36 @@
+#+TITLE: My custom Emacs config
+#+STARTUP: content
+#+PROPERTY: header-args:emacs-lisp :tangle yes :results output silent
+
+* Notes
+This is an org mode literate config. Use <TAB> to expand sections, and put Emacs lisp in source blocks.
+
+* TODOs
+** TODO Put your personal settings here
+
+** Emacs editor style
+#+begin_src emacs-lisp
+  ;; My cursor a bar, not a blinking box
+  (setq-default cursor-type 'bar)
+
+  ;; let's not see the toolbar
+  (tool-bar-mode -1)
+
+  ;; turn off the splash screen
+  (setq inhibit-splash-screen t)
+
+  ;; set scrolling to be nicer
+  (setq scroll-margin 30)
+  (setq scroll-step 1)
+  (setq scroll-conservatively 10000)
+  (setq auto-window-vscroll nil)
+
+  ;; show line numbers
+  (global-display-line-numbers-mode)
+
+  ;; font
+  (ignore-errors (set-frame-font "Meslo LG S for Powerline 13"))
+
+  ;; trailing newlines are the bomb
+  (setq require-final-newline t)
+#+end_src
