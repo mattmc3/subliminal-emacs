@@ -1,0 +1,107 @@
+#+TITLE: Subliminal Keys
+#+AUTHOR: mattmc3
+#+STARTUP: content
+#+PROPERTY: header-args:emacs-lisp :tangle yes :results output silent
+
+* Modifiers
+
+** Mac configuration
+On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
+
+#+begin_src emacs-lisp
+  (setq mac-option-key-is-meta t
+        mac-command-key-is-meta nil
+        mac-command-modifier 'super
+        mac-option-modifier 'meta)
+#+end_src
+
+* Key bindings
+
+** Resources
+
+ - [[https://osdn.net/projects/macwiki/svn/view/zenitani/CarbonEmacs/src/lisp/mac-key-mode.el?root=macwiki&view=markup][Mac Keys]]
+
+** Text zoom
+
+Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "s-=") 'text-scale-increase)
+  (global-set-key (kbd "s--") 'text-scale-decrease)
+#+end_src
+
+** Cut/Copy/Paste
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "s-x") 'kill-region)
+  (global-set-key (kbd "s-c") 'kill-ring-save)
+  (global-set-key (kbd "s-v") 'yank)
+#+end_src
+
+** Undo/redo
+
+#+begin_src emacs-lisp
+  ; in emacs 28, there's an undo-redo function, but until then we use a package
+  (use-package undo-fu
+    :ensure t
+    :config
+    (global-set-key (kbd "s-z")   'undo-fu-only-undo)
+    (global-set-key (kbd "s-Z") 'undo-fu-only-redo))
+
+#+end_src
+
+** Movement
+
+*** Home/End
+
+#+begin_src emacs-lisp
+  (global-set-key [(super left)] 'beginning-of-line)
+  (global-set-key [(super right)] 'end-of-line)
+#+end_src
+
+*** Top/Bottom
+
+#+begin_src emacs-lisp
+  (global-set-key [(super up)] 'beginning-of-buffer)
+  (global-set-key [(super down)] 'end-of-buffer)
+#+end_src
+
+** File management
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "s-n") 'kill-ring-save)
+  (global-set-key (kbd "s-s") 'save-buffer)
+#+end_src
+
+** Text selection
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "s-a") 'mark-whole-buffer)
+#+end_src
+
+* Org mode
+#+begin_src emacs-lisp
+  ;; https://emacs.stackexchange.com/questions/43656/make-c-s-up-handle-shift-selection-under-org-mode
+  (setq org-support-shift-select t
+        org-replace-disputed-keys t)
+  (eval-after-load "org"
+    '(progn
+       (define-key org-mode-map (kbd "<S-up>") nil)
+       (define-key org-mode-map (kbd "<S-down>") nil)
+       (define-key org-mode-map (kbd "<S-left>") nil)
+       (define-key org-mode-map (kbd "<S-right>") nil)
+       (define-key org-mode-map (kbd "<M-S-left>") nil)
+       (define-key org-mode-map (kbd "<M-S-right>") nil)
+       (define-key org-mode-map (kbd "<M-left>") nil)
+       (define-key org-mode-map (kbd "<M-right>") nil)
+       (define-key org-mode-map [C-S-up] 'org-shiftup)
+       (define-key org-mode-map [C-S-down] 'org-shiftdown)
+       (define-key org-mode-map [C-S-left] 'org-shiftleft)
+       (define-key org-mode-map [C-S-right] 'org-shiftright)
+       (define-key org-mode-map [C-S-right] 'org-shiftmetaright)
+       (define-key org-mode-map [C-S-left] 'org-shiftmetaleft)
+       (define-key org-mode-map [C-right] 'org-metaright)
+       (define-key org-mode-map [C-left] 'org-metaleft)
+       (define-key org-mode-map [C-S-return] 'org-insert-todo-heading)
+       ))
+#+end_src

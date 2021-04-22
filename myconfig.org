@@ -34,3 +34,19 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
   ;; trailing newlines are the bomb
   (setq require-final-newline t)
 #+end_src
+
+** Whitespace
+
+#+begin_src emacs-lisp
+  (whitespace-mode)
+  (setq whitespace-style '(trailing tabs tab-mark))
+  (whitespace-mode)
+#+end_src
+
+** Org mode
+
+#+begin_src emacs-lisp
+  (setq org-adapt-indentation nil
+        org-bullets-bullet-list '("◉" "○" "✸" "◈" "✽" "✲")
+        org-startup-with-inline-images t)
+#+end_src

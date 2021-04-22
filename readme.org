@@ -1,5 +1,3 @@
-#+TITLE: Subliminal Emacs
-
 * Subliminal Emacs
 
 ** Manifesto
@@ -19,3 +17,5 @@
 - [[https://github.com/purcell/emacs.d][Purcell]]
 - [[https://github.com/hlissner/doom-emacs][Doom]]
 - [[https://github.com/bbatsov/prelude][Prelude]]
+- [[https://github.com/makuto/editorPreferences/tree/master/Emacs][Macoy]]
+  
