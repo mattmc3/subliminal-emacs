@@ -10,39 +10,27 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
 ** TODO Put your personal settings here
 
 ** Emacs editor style
+
+*** Font
 #+begin_src emacs-lisp
-  ;; My cursor a bar, not a blinking box
-  (setq-default cursor-type 'bar)
-
-  ;; let's not see the toolbar
-  (tool-bar-mode -1)
-
-  ;; turn off the splash screen
-  (setq inhibit-splash-screen t)
-
-  ;; set scrolling to be nicer
-  (setq scroll-margin 30)
-  (setq scroll-step 1)
-  (setq scroll-conservatively 10000)
-  (setq auto-window-vscroll nil)
-
-  ;; show line numbers
-  (global-display-line-numbers-mode)
-
   ;; font
   (ignore-errors (set-frame-font "Meslo LG S for Powerline 13"))
+#+end_src
+
+*** Line numbers
+#+begin_src emacs-lisp
+  ;; show line numbers
+  (global-display-line-numbers-mode)
+#+end_src
+
+*** Whitespace
+#+begin_src emacs-lisp
+  ;; show tabs
+  (global-whitespace-mode)
+  (setq whitespace-style '(trailing tabs tab-mark))
 
   ;; trailing newlines are the bomb
   (setq require-final-newline t)
-#+end_src
-
-** Whitespace
-
-#+begin_src emacs-lisp
-  (global-whitespace-mode)
-  ;;(whitespace-mode)
-  (setq whitespace-style '(trailing tabs tab-mark))
-  ;;(whitespace-mode)
 #+end_src
 
 ** Org mode
@@ -55,7 +43,7 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
 
 ** Packages
 *** Editorconfig
-#+begin_src
+#+begin_src emacs-lisp
   (use-package editorconfig
     :ensure t
     :config
@@ -68,3 +56,55 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
     :ensure t)
   (which-key-mode)
 #+end_src
+
+*** Treesitter
+#+begin_src emacs-lisp
+;; more consistant syntax highlighting
+(use-package tree-sitter
+  :ensure t
+  :diminish
+  :hook ((ruby-mode . tree-sitter-hl-mode)
+         (rustic-mode . tree-sitter-hl-mode))
+  :config (global-tree-sitter-mode))
+
+(use-package tree-sitter-langs
+  :ensure t
+  :after tree-sitter)
+#+end_src
+
+*** Rainbow delimiters
+#+begin_src emacs-lisp
+;; match paired brackets with colors
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
+
+*** Language server processor (LSP)
+#+begin_src emacs-lisp
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :hook (lsp-enable-which-key-integration)
+;;   :commands lsp
+;;   :custom (lsp-keymap-prefix "C-c M-k")
+;;   :config (add-to-list 'exec-path "~/src/elixir-lsp/elixir-ls/release"))
+;; 
+;; (use-package lsp-ui
+;;   :ensure t
+;;   :after lsp-mode
+;;   :hook (lsp-mode . lsp-ui-mode)
+;;   :commands lsp-ui-mode)
+#+end_src
+
+*** Version control
+#+begin_src emacs-lisp
+;; (use-package magit
+;;   :ensure t
+;;   :pin melpa
+;;   :bind (("C-c g s" . magit-status))
+;;   :hook ((git-commit-mode . (lambda () (set-fill-column 72))))
+;;   :config
+;;   (setq git-commit-style-convention-checks '(non-empty-second-line overlong-summary-line)
+;;         git-commit-summary-max-length 50))
+#+end_src
+

@@ -3,3 +3,4 @@ myconfig.el
 subliminal*.el
 elpa/
 auto-save-list/
+transient/

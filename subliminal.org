@@ -7,15 +7,29 @@
 This is an org mode literate config. Use <TAB> to expand sections, and put Emacs lisp in source blocks.
 
 * Subliminal TODOs
-- [ ] Add mini-map
-- [ ] Add multiple cursor plugin
-- [ ] Find/Replace shortcuts
-- [ ] Frame geometry
-- [ ] Save sessions
 
+** General
+- [ ] Add mini-map
+- [ ] Find/Replace shortcuts
+- [ ] Configure multi-cursor
+- [ ] File tree sidebar
+- [ ] modeline (diminish)
+- [ ] recent files (recentf)
+- [ ] move between windows (groups in sublime)
+- [ ] terminal
+- [x] highlight line
+- [x] ⌘-P for M-x
+- [x] Add multiple cursor plugin
+- [x] Save sessions
+
+** Developer tools
+- [ ] Magit
+- [ ] LSP
+- [ ] Treesitter
+  
 * Setup
 
-** UTF-8
+** UTF-8 all the things
 #+begin_src emacs-lisp
   ;; default to utf-8 for all the things
   (set-charset-priority 'unicode)
@@ -23,25 +37,76 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
   (set-selection-coding-system 'utf-8)
-		(prefer-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
   (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 #+end_src
 
 ** Better Emacs defaults
 #+begin_src emacs-lisp
+  ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html
   (setq lexical-binding t)
+
+  ;; The default is 600
   (setq max-lisp-eval-depth 2000)
-  (setq gc-cons-threshold 100000000)
-  ;; always allow 'y' instead of 'yes'.
+
+  ;; Always load newest byte code
+  (setq load-prefer-newer t)
+
+  ;; reduce the frequency of garbage collection by making it happen on
+  ;; each 50MB of allocated data (the default is on every 0.76MB)
+  (setq gc-cons-threshold 50000000)
+
+  ;; warn when opening files bigger than 100MB
+  (setq large-file-warning-threshold 100000000)
+
+  ;; always allow 'y' instead of 'yes'
   (defalias 'yes-or-no-p 'y-or-n-p)
+
+  ;; smart tab behavior - indent or complete
+  (setq tab-always-indent 'complete)
+
+  ;; disable blink-matching-paren in favor of using colors
+  (setq blink-matching-paren nil)
 #+end_src
 
-** Restore sessions
+** Externally modified files
 #+begin_src emacs-lisp
-  (desktop-save-mode 1)
+  ;; revert buffers automatically when underlying files are changed externally
+  (global-auto-revert-mode t)
 #+end_src
 
-** Package management
+** GUI Chrome
+
+*** Highlight current line
+#+begin_src emacs-lisp
+  (global-hl-line-mode +1)
+#+end_src
+
+*** Toolbar/Splash screen
+#+begin_src emacs-lisp
+  ;; let's not see the toolbar
+  (tool-bar-mode -1)
+
+  ;; turn off the splash screen
+  (setq inhibit-splash-screen t)
+#+end_src
+
+*** Scrolling
+#+begin_src emacs-lisp
+  ;; set scrolling to be nicer
+  (setq scroll-margin 30)
+  (setq scroll-step 1)
+  (setq scroll-conservatively 10000)
+  (setq auto-window-vscroll nil)
+#+end_src
+
+*** Cursor
+#+begin_src emacs-lisp
+  ;; Make the cursor a bar, not a blinking box
+  (setq-default cursor-type 'bar)
+#+end_src
+
+** Setup Package management
 We want to use packages, so let's get that configured
 
 #+begin_src emacs-lisp
@@ -49,8 +114,11 @@ We want to use packages, so let's get that configured
 
   (setq package-enable-at-startup nil)
 
-  (add-to-list 'package-archives
-	       '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (add-to-list 'package-archives '("ublt" . "https://elpa.ubolonton.org/packages/") t)
+
   (package-initialize)
 
   (unless (package-installed-p 'use-package)
@@ -69,7 +137,7 @@ We want to use packages, so let's get that configured
   ;;  (exec-path-from-shell-initialize))
 #+end_src
 
-** Settings to sort later
+** Miscellaneous settings
 #+begin_src emacs-lisp
   ;; write over selected text on input... like modern editors should
   (delete-selection-mode t)
@@ -103,12 +171,20 @@ We want to use packages, so let's get that configured
   (setq auto-window-vscroll nil)
 #+end_src
 
-** Keybindings
+* Subliminal
+
+There are some awesome things editors like Sublime Text has built in.
+Let's add those behaviors to Emacs, either through plugins or through other means.
+
+** Restore sessions
+#+begin_src emacs-lisp
+  (desktop-save-mode 1)
+#+end_src
+
+** Sublime Keybindings
 #+begin_src emacs-lisp
   (org-babel-load-file (expand-file-name "subliminal-keys.org" user-emacs-directory))
 #+end_src
-
-* Subliminal
 
 ** Indent guides
 
@@ -128,6 +204,10 @@ We want to use packages, so let's get that configured
 #+end_src
 
 ** Multiple cursors
+
+- [[https://emacs.stackexchange.com/questions/751/fundamentals-of-multiple-cursors][Multiple cursors stackexchange question]]
+- [[http://emacsrocks.com/e13.html][Emacs Rocks]]
+
 #+begin_src emacs-lisp
   (use-package multiple-cursors)
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
@@ -156,8 +236,9 @@ We want to use packages, so let's get that configured
   ;; (minimap-mode)
 #+end_src
 
-** Centaur Tabs
-[[https://github.com/ema2159/centaur-tabs][Centaur Tabs]]
+** Buffer tabs
+For buffer (file) tabs, we use the excellent [[https://github.com/ema2159/centaur-tabs][Centaur Tabs]] package.
+
 #+begin_src emacs-lisp
   (use-package centaur-tabs
     :ensure t

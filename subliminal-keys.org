@@ -19,11 +19,20 @@ On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
 
 ** Resources
 
- - [[https://osdn.net/projects/macwiki/svn/view/zenitani/CarbonEmacs/src/lisp/mac-key-mode.el?root=macwiki&view=markup][Mac Keys]]
+ - [[https://osdn.net/projects/macwiki/svn/view/zenitani/CarbonEmacs/src/lisp/mac-key-mode.el?root=macwiki&view=markup][Mac Key Mode]] from CarbonEmacs
+
+** Sublime Text specific
+
+Sublime has some keybindings for its own unique features like ⌘-shift-p
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "s-P") 'execute-extended-command)
+#+end_src
 
 ** Escape
 
-Let's allow Esc to be used instead of C-g, which is the Emacs default
+Let's allow Esc to be used instead of C-g, which is the Emacs default.
+[[https://www.reddit.com/r/emacs/comments/67rlfr/esc_vs_cg/][See this thread]]
 
 #+begin_src emacs-lisp
   (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
@@ -53,7 +62,7 @@ Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
   (use-package undo-fu
     :ensure t
     :config
-    (global-set-key (kbd "s-z")   'undo-fu-only-undo)
+    (global-set-key (kbd "s-z") 'undo-fu-only-undo)
     (global-set-key (kbd "s-Z") 'undo-fu-only-redo))
 
 #+end_src
@@ -79,6 +88,12 @@ Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
 #+begin_src emacs-lisp
   (global-set-key (kbd "s-n") 'kill-ring-save)
   (global-set-key (kbd "s-s") 'save-buffer)
+#+end_src
+
+** Window management
+
+#+begin_src emacs-lisp
+  ;; (global-set-key (kbd "s-w") 'mac-key-close-window)
 #+end_src
 
 ** Text selection
