@@ -1,4 +1,5 @@
 #+TITLE: My custom Emacs config
+#+AUTHOR: mattmc3
 #+STARTUP: content
 #+PROPERTY: header-args:emacs-lisp :tangle yes :results output silent
 
@@ -38,9 +39,10 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
 ** Whitespace
 
 #+begin_src emacs-lisp
-  (whitespace-mode)
+  (global-whitespace-mode)
+  ;;(whitespace-mode)
   (setq whitespace-style '(trailing tabs tab-mark))
-  (whitespace-mode)
+  ;;(whitespace-mode)
 #+end_src
 
 ** Org mode
@@ -49,4 +51,20 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
   (setq org-adapt-indentation nil
         org-bullets-bullet-list '("◉" "○" "✸" "◈" "✽" "✲")
         org-startup-with-inline-images t)
+#+end_src
+
+** Packages
+*** Editorconfig
+#+begin_src
+  (use-package editorconfig
+    :ensure t
+    :config
+    (editorconfig-mode 1))
+#+end_src
+
+*** Which-key
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t)
+  (which-key-mode)
 #+end_src

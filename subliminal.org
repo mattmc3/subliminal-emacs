@@ -1,4 +1,5 @@
 #+TITLE: Subliminal Emacs Config
+#+AUTHOR: mattmc3
 #+STARTUP: content
 #+PROPERTY: header-args:emacs-lisp :tangle yes :results output silent
 
@@ -44,26 +45,28 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
 We want to use packages, so let's get that configured
 
 #+begin_src emacs-lisp
-    (require 'package)
+  (require 'package)
 
-    (setq package-enable-at-startup nil)
+  (setq package-enable-at-startup nil)
 
-    (add-to-list 'package-archives
-		 '("melpa" . "https://melpa.org/packages/") t)
-    (package-initialize)
+  (add-to-list 'package-archives
+	       '("melpa" . "https://melpa.org/packages/") t)
+  (package-initialize)
 
-    (unless (package-installed-p 'use-package)
-      (package-refresh-contents)
-      (package-install 'use-package))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
 
-    ;;(use-package diminish :ensure t)
+  (setq use-package-always-ensure t)
 
-    ;;(use-package exec-path-from-shell
-    ;;  :ensure t
-    ;;  :config
-    ;;  (setenv "SHELL" "/usr/local/bin/zsh")
-    ;;  (setq exec-path-from-shell-variables '("PATH"))
-    ;;  (exec-path-from-shell-initialize))
+  ;;(use-package diminish :ensure t)
+
+  ;;(use-package exec-path-from-shell
+  ;;  :ensure t
+  ;;  :config
+  ;;  (setenv "SHELL" "/usr/local/bin/zsh")
+  ;;  (setq exec-path-from-shell-variables '("PATH"))
+  ;;  (exec-path-from-shell-initialize))
 #+end_src
 
 ** Settings to sort later
@@ -107,7 +110,30 @@ We want to use packages, so let's get that configured
 
 * Subliminal
 
-* Packages
+** Indent guides
+
+#+begin_src emacs-lisp
+  ;; indent with tabs, align with spaces where enabled
+  (use-package smart-tabs-mode
+    :ensure t)
+
+  ;; add a visual intent guide
+  (use-package highlight-indent-guides
+    :ensure t
+    :hook (prog-mode . highlight-indent-guides-mode)
+    :custom
+    (highlight-indent-guides-method 'character)
+    (highlight-indent-guides-character ?|)
+    (highlight-indent-guides-responsive 'stack))
+#+end_src
+
+** Multiple cursors
+#+begin_src emacs-lisp
+  (use-package multiple-cursors)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "s-D") 'mc/mark-next-like-this-word)
+  (global-set-key (kbd "s-L") 'mc/edit-ends-of-lines)
+#+end_src
 
 ** Monokai theme
 #+begin_src emacs-lisp

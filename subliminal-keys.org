@@ -21,6 +21,14 @@ On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
 
  - [[https://osdn.net/projects/macwiki/svn/view/zenitani/CarbonEmacs/src/lisp/mac-key-mode.el?root=macwiki&view=markup][Mac Keys]]
 
+** Escape
+
+Let's allow Esc to be used instead of C-g, which is the Emacs default
+
+#+begin_src emacs-lisp
+  (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+#+end_src
+
 ** Text zoom
 
 Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
