@@ -6,15 +6,34 @@
 * Notes
 This is an org mode literate config. Use <TAB> to expand sections, and put Emacs lisp in source blocks.
 
+** Tangling
+
+Org mode converts to e-lisp files with the =:tangle yes= header,
+but some blocks can be excluded with an explicit  =:tangle no=.
+This is easier than commenting everything out in a block.
+
+** Org mode references
++ [[https://orgmode.org/manual/][Manual]]
++ [[https://orgmode.org/manual/Languages.html#Languages][Source block languages]]
+
 * TODOs
 ** TODO Put your personal settings here
 
 ** Emacs editor style
 
 *** Font
+
+To install fonts via homebrew, you can run the following commands:
+
+#+begin_src sh
+  brew install --cask font-sauce-code-pro-nerd-font
+#+end_src
+
 #+begin_src emacs-lisp
-  ;; font
-  (ignore-errors (set-frame-font "Meslo LG S for Powerline 13"))
+  ;; Sauce Code Pro Nerd Font
+  ;; (ignore-errors (set-frame-font "Sauce Code Pro Nerd Font 13"))
+  ;; MesloLGS Nerd Font
+  (ignore-errors (set-frame-font "MesloLGS Nerd Font 13"))
 #+end_src
 
 *** Line numbers
@@ -109,12 +128,12 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
 #+end_src
 
 *** Diminish
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package diminish :ensure t)
 #+end_src
 
-*** Diminish
-#+begin_src emacs-lisp
+*** Exec path from shell
+#+begin_src emacs-lisp :tangle no
   (use-package exec-path-from-shell
     :ensure t
     :config

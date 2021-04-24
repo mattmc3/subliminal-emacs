@@ -16,7 +16,7 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
 - [ ] modeline (diminish)
 - [ ] recent files (recentf)
 - [ ] move between windows (groups in sublime)
-- [ ] terminal
+- [ ] terminal (vterm)
 - [x] highlight line
 - [x] ⌘-P for M-x
 - [x] Add multiple cursor plugin
@@ -233,3 +233,16 @@ For buffer (file) tabs, we use the excellent [[https://github.com/ema2159/centau
   ;;(setq centaur-tabs-gray-out-icons 'buffer)
   ;;(setq centaur-tabs-style "slant")
 #+end_src
+
+** Terminal
+
+#+begin_src emacs-lisp
+  (defun subliminal/open-eshell ()
+    "Open an eshell split"
+    (interactive)
+    (let ((w (split-window-below)))
+      (select-window w)
+      (eshell))
+    (switch-to-buffer "*eshell*"))
+#+end_src
+

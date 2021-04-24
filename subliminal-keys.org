@@ -102,6 +102,12 @@ Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
   (global-set-key (kbd "s-a") 'mark-whole-buffer)
 #+end_src
 
+** Terminal
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-`") 'subliminal/open-eshell)
+#+end_src
+
 * Org mode
 #+begin_src emacs-lisp
   ;; https://emacs.stackexchange.com/questions/43656/make-c-s-up-handle-shift-selection-under-org-mode
