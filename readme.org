@@ -11,7 +11,6 @@
 - Emacs is your editor, use it your way!
 
 ** Installation
-
 Install Emacs-Plus on a Mac via Homebrew
 
 #+begin_src sh

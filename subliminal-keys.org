@@ -29,6 +29,47 @@ Sublime has some keybindings for its own unique features like ⌘-shift-p
   (global-set-key (kbd "s-P") 'execute-extended-command)
 #+end_src
 
+** Edit
+
+*** Line
+
+**** Insert line above: <CMD-SHIFT-RET>
+
+#+begin_src emacs-lisp
+  (defun subl/insert-line-above ()
+    (interactive)
+    (move-beginning-of-line nil)
+    (newline-and-indent)
+    (forward-line -1)
+    (indent-according-to-mode))
+
+  (global-set-key (kbd "<s-S-return>") 'subl/insert-line-above)
+#+end_src
+
+**** Insert line below: <CMD-RET>
+
+#+begin_src emacs-lisp
+  (defun subl/insert-line-below ()
+    (interactive)
+    (move-end-of-line nil)
+    (newline-and-indent)
+    (indent-according-to-mode))
+
+  (global-set-key (kbd "<s-return>") 'subl/insert-line-below)
+#+end_src
+
+**** Join lines: <CMD-J>
+
+#+begin_src emacs-lisp
+  (defun subl/join-line ()
+    (interactive)
+    (join-line -1))
+
+  (global-set-key (kbd "s-j") 'subl/join-line)
+#+end_src
+
+
+
 ** Escape
 
 Let's allow Esc to be used instead of C-g, which is the Emacs default.
@@ -69,17 +110,6 @@ Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
 
 ** Movement
 
-** Coding
-*** Commenting
-To handle code commenting properly, let's punt and use a plugin
-
-#+begin_src emacs-lisp
-(use-package evil-nerd-commenter
-  :ensure t
-  :config
-  (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines))
-#+end_src
-
 *** Home/End
 
 #+begin_src emacs-lisp
@@ -94,6 +124,16 @@ To handle code commenting properly, let's punt and use a plugin
   (global-set-key [(super down)] 'end-of-buffer)
 #+end_src
 
+** Coding
+*** Commenting
+To handle code commenting properly, let's punt and use a plugin
+
+#+begin_src emacs-lisp
+(use-package evil-nerd-commenter
+  :ensure t
+  :config
+  (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines))
+#+end_src
 ** File management
 
 #+begin_src emacs-lisp
@@ -108,15 +148,14 @@ To handle code commenting properly, let's punt and use a plugin
 #+end_src
 
 ** Text selection
-
 #+begin_src emacs-lisp
   (global-set-key (kbd "s-a") 'mark-whole-buffer)
 #+end_src
 
-** Terminal
+** Shell
 
 #+begin_src emacs-lisp
-  ;; (global-set-key (kbd "C-`") 'subliminal/open-eshell)
+  (global-set-key (kbd "C-`") 'subl/open-eshell)
 #+end_src
 
 * Org mode

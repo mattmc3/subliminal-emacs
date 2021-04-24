@@ -147,6 +147,20 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
 There are some awesome things editors like Sublime Text has built in.
 Let's add those behaviors to Emacs, either through plugins or through other means.
 
+** Save all
+
+#+begin_src emacs-lisp
+  ; http://ergoemacs.org/emacs/emacs_auto_save.html
+(defun subl/save-all-unsaved ()
+  "Save all unsaved files without prompting"
+  (interactive)
+  (save-some-buffers t))
+
+(if (version< emacs-version "27")
+    (add-hook 'focus-out-hook 'subl/save-all-unsaved)
+  (setq after-focus-change-function 'subl/save-all-unsaved))
+#+end_src
+
 ** Restore sessions
 #+begin_src emacs-lisp
   (desktop-save-mode 1)
@@ -237,7 +251,7 @@ For buffer (file) tabs, we use the excellent [[https://github.com/ema2159/centau
 ** Shell
 
 #+begin_src emacs-lisp
-  (defun subliminal/open-eshell ()
+  (defun subl/open-eshell ()
     "Open an eshell split"
     (interactive)
     (let ((w (split-window-below)))
