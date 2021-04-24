@@ -69,6 +69,17 @@ Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
 
 ** Movement
 
+** Coding
+*** Commenting
+To handle code commenting properly, let's punt and use a plugin
+
+#+begin_src emacs-lisp
+(use-package evil-nerd-commenter
+  :ensure t
+  :config
+  (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines))
+#+end_src
+
 *** Home/End
 
 #+begin_src emacs-lisp
@@ -105,7 +116,7 @@ Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
 ** Terminal
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-`") 'subliminal/open-eshell)
+  ;; (global-set-key (kbd "C-`") 'subliminal/open-eshell)
 #+end_src
 
 * Org mode

@@ -10,6 +10,15 @@
 - When there's a reason to do it "the Emacs way", it should be easy to remove the emulation
 - Emacs is your editor, use it your way!
 
+** Installation
+
+Install Emacs-Plus on a Mac via Homebrew
+
+#+begin_src sh
+  brew tap d12frosted/emacs-plus
+  brew install emacs-plus --with-nobu417-big-sur-icon
+#+end_src
+
 ** Reference configs
 - [[https://github.com/natecox/dotfiles/tree/master/emacs/emacs.d][Nate Cox]]
 - [[https://github.com/frap/emacs-literate/blob/master/readme.org][frap]]

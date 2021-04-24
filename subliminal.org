@@ -234,7 +234,7 @@ For buffer (file) tabs, we use the excellent [[https://github.com/ema2159/centau
   ;;(setq centaur-tabs-style "slant")
 #+end_src
 
-** Terminal
+** Shell
 
 #+begin_src emacs-lisp
   (defun subliminal/open-eshell ()
