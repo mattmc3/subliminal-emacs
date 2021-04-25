@@ -8,6 +8,7 @@ Keybindings for the Mac that make Emacs feel more familiar to users of other edi
 * Modifiers
 
 ** Mac configuration
+
 On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
 
 #+begin_src emacs-lisp
@@ -16,6 +17,7 @@ On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
         mac-command-modifier 'super
         mac-option-modifier 'meta)
 #+end_src
+
 
 * Key bindings
 
@@ -42,6 +44,7 @@ Sublime has some keybindings for its own unique features like ⌘-shift-p
 #+end_src
 
 ** Escape
+
 C-g is the Emacs standard, but using the Esc key is common coming from other editors
 
 [[https://www.reddit.com/r/emacs/comments/67rlfr/esc_vs_cg/][See this thread]]
@@ -67,16 +70,10 @@ See discussion [[https://github.com/microsoft/vscode-sublime-keybindings/issues/
 Sublime allows code folding with simple keyboard shortcuts.
 
 #+begin_src emacs-lisp
-  ;; https://emacs.wordpress.com/2007/01/16/quick-and-dirty-code-folding/
-  (defun subliminal/toggle-selective-display (column)
-    (interactive "P")
-    (set-selective-display 
-      (if selective-display nil (or column 1))))
-
   ;; C-0 unfold all
   (global-set-key (kbd "C-0") 'set-selective-display)
   ;; C-1 thru C-9, fold levels
-  (global-set-key (kbd "C-1") 'subliminal/toggle-selective-display)
+  (global-set-key (kbd "C-1") 'subl/toggle-code-folding)
 #+end_src
 
 ** Text zoom
@@ -97,10 +94,6 @@ Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
 #+end_src
 
 ** Undo/redo
-
-- [[https://gitlab.com/ideasman42/emacs-undo-fu][Undo-fu]] package
-- [[http://ergoemacs.org/emacs/emacs_best_redo_mode.html][Undo/redo saga]]
-- [[https://stackoverflow.com/questions/3527142/how-do-you-redo-changes-after-undo-with-emacs][Stackoverflow]]
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "s-z") 'undo-fu-only-undo)
@@ -132,15 +125,13 @@ Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
 #+end_src
 
 ** Coding
+
 *** Commenting
-To handle code commenting properly, let's punt and use a plugin
 
 #+begin_src emacs-lisp
-(use-package evil-nerd-commenter
-  :ensure t
-  :config
-  (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines))
+  (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines)
 #+end_src
+
 ** File management
 
 #+begin_src emacs-lisp
@@ -151,10 +142,11 @@ To handle code commenting properly, let's punt and use a plugin
 ** Window management
 
 #+begin_src emacs-lisp
-  ;; (global-set-key (kbd "s-w") 'mac-key-close-window)
+  (global-set-key (kbd "s-S-w") 'subl/close-window)
 #+end_src
 
 ** Text selection
+
 #+begin_src emacs-lisp
   (global-set-key (kbd "s-a") 'mark-whole-buffer)
 #+end_src
@@ -170,7 +162,7 @@ To handle code commenting properly, let's punt and use a plugin
   ;; https://emacs.stackexchange.com/questions/43656/make-c-s-up-handle-shift-selection-under-org-mode
   ;; https://orgmode.org/manual/Conflicts.html
   (setq org-support-shift-select t
-	org-replace-disputed-keys t)
+        org-replace-disputed-keys t)
   (eval-after-load "org"
     '(progn
        (define-key org-mode-map (kbd "<S-up>") nil)
