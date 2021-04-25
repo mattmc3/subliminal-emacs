@@ -4,3 +4,4 @@ subliminal*.el
 elpa/
 auto-save-list/
 transient/
+eshell/

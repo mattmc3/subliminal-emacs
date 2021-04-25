@@ -3,6 +3,8 @@
 #+STARTUP: content
 #+PROPERTY: header-args:emacs-lisp :tangle yes :results output silent
 
+Keybindings for the Mac that make Emacs feel more familiar to users of other editors like VSCode, Sublime Text, or Atom.
+
 * Modifiers
 
 ** Mac configuration
@@ -21,62 +23,60 @@ On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
 
  - [[https://osdn.net/projects/macwiki/svn/view/zenitani/CarbonEmacs/src/lisp/mac-key-mode.el?root=macwiki&view=markup][Mac Key Mode]] from CarbonEmacs
 
-** Sublime Text specific
+** Sublime Text
 
 Sublime has some keybindings for its own unique features like ⌘-shift-p
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "s-P") 'execute-extended-command)
+  (global-set-key (kbd "s-S-p") 'execute-extended-command)
 #+end_src
 
 ** Edit
 
 *** Line
 
-**** Insert line above: <CMD-SHIFT-RET>
-
 #+begin_src emacs-lisp
-  (defun subl/insert-line-above ()
-    (interactive)
-    (move-beginning-of-line nil)
-    (newline-and-indent)
-    (forward-line -1)
-    (indent-according-to-mode))
-
   (global-set-key (kbd "<s-S-return>") 'subl/insert-line-above)
-#+end_src
-
-**** Insert line below: <CMD-RET>
-
-#+begin_src emacs-lisp
-  (defun subl/insert-line-below ()
-    (interactive)
-    (move-end-of-line nil)
-    (newline-and-indent)
-    (indent-according-to-mode))
-
   (global-set-key (kbd "<s-return>") 'subl/insert-line-below)
-#+end_src
-
-**** Join lines: <CMD-J>
-
-#+begin_src emacs-lisp
-  (defun subl/join-line ()
-    (interactive)
-    (join-line -1))
-
   (global-set-key (kbd "s-j") 'subl/join-line)
 #+end_src
 
-
-
 ** Escape
+C-g is the Emacs standard, but using the Esc key is common coming from other editors
 
-Let's allow Esc to be used instead of C-g, which is the Emacs default.
 [[https://www.reddit.com/r/emacs/comments/67rlfr/esc_vs_cg/][See this thread]]
 
 #+begin_src emacs-lisp
   (define-key key-translation-map (kbd "ESC") (kbd "C-g"))
+#+end_src
+
+** Sorting
+
+Sublime uses F5 and C-F5 for sorting. That can be somewhat controversial, so this code is here, but
+we're not going to tangle it at this time.
+
+See discussion [[https://github.com/microsoft/vscode-sublime-keybindings/issues/50][here]]
+
+#+begin_src emacs-lisp :tangle no
+  ;; (global-set-key (kbd "<f5>") 'subl/sort-lines-nocase)
+  ;; (global-set-key (kbd "C-<f5>") 'sort-lines)
+#+end_src
+
+** Code folding
+
+Sublime allows code folding with simple keyboard shortcuts.
+
+#+begin_src emacs-lisp
+  ;; https://emacs.wordpress.com/2007/01/16/quick-and-dirty-code-folding/
+  (defun subliminal/toggle-selective-display (column)
+    (interactive "P")
+    (set-selective-display 
+      (if selective-display nil (or column 1))))
+
+  ;; C-0 unfold all
+  (global-set-key (kbd "C-0") 'set-selective-display)
+  ;; C-1 thru C-9, fold levels
+  (global-set-key (kbd "C-1") 'subliminal/toggle-selective-display)
 #+end_src
 
 ** Text zoom
@@ -97,6 +97,10 @@ Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
 #+end_src
 
 ** Undo/redo
+
+- [[https://gitlab.com/ideasman42/emacs-undo-fu][Undo-fu]] package
+- [[http://ergoemacs.org/emacs/emacs_best_redo_mode.html][Undo/redo saga]]
+- [[https://stackoverflow.com/questions/3527142/how-do-you-redo-changes-after-undo-with-emacs][Stackoverflow]]
 
 #+begin_src emacs-lisp
   ; in emacs 28, there's an undo-redo function, but until then we use a package
@@ -161,8 +165,9 @@ To handle code commenting properly, let's punt and use a plugin
 * Org mode
 #+begin_src emacs-lisp
   ;; https://emacs.stackexchange.com/questions/43656/make-c-s-up-handle-shift-selection-under-org-mode
+  ;; https://orgmode.org/manual/Conflicts.html
   (setq org-support-shift-select t
-        org-replace-disputed-keys t)
+	org-replace-disputed-keys t)
   (eval-after-load "org"
     '(progn
        (define-key org-mode-map (kbd "<S-up>") nil)

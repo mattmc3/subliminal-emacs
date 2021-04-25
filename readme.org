@@ -1,13 +1,13 @@
 * Subliminal Emacs
 
 ** Manifesto
-- Emacs is a great editor and has stood the test of time
-- Emacs is not very easy to use out of the box and adheres to its own standards
-- Emacs is infinitely configurable, and configuring it to work the way you want it to is encouraged
-- [[https://www.sublimetext.com][Other editors]] are also great, but not always open source, or development is super slow, and may not stand the test of time
-- Emacs can be adapted to work more like [[https://www.sublimetext.com][other editors]] to make it easier to adapt to
-- Making Emacs work like other editors is not wrong, and in fact can make Emacs more accessible to more people
-- When there's a reason to do it "the Emacs way", it should be easy to remove the emulation
+- Emacs is a great editor that has stood the test of time
+- Emacs is not very easy to use out of the box and stubbornly adheres to its own outmoded standards
+- Emacs is infinitely configurable, and configuring it to work the way you want it to is encouraged, but not easy for new users
+- [[https://www.sublimetext.com][Other editors]] are also great, but may not be open source, development stagnates, may not run on your platform, or may not stand the test of time
+- Emacs can be adapted to work more like [[https://www.sublimetext.com][other editors]], which can make it easier to use and adopt for users familiar with those editors
+- Making Emacs work like other editors is not wrong-headed, and in fact shows its power to adapt and can make it accessible to more people
+- When there comes a time to do it "the Emacs way", it should be easy to remove the emulation
 - Emacs is your editor, use it your way!
 
 ** Installation
@@ -19,10 +19,11 @@ Install Emacs-Plus on a Mac via Homebrew
 #+end_src
 
 ** Reference configs
-- [[https://github.com/natecox/dotfiles/tree/master/emacs/emacs.d][Nate Cox]]
-- [[https://github.com/frap/emacs-literate/blob/master/readme.org][frap]]
-- [[https://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]]
-- [[https://github.com/purcell/emacs.d][Purcell]]
 - [[https://github.com/hlissner/doom-emacs][Doom]]
-- [[https://github.com/bbatsov/prelude][Prelude]]
+- [[https://github.com/frap/emacs-literate/blob/master/readme.org][frap]]
 - [[https://github.com/makuto/editorPreferences/tree/master/Emacs][Macoy]]
+- [[https://github.com/natecox/dotfiles/tree/master/emacs/emacs.d][Nate Cox]]
+- [[https://github.com/purcell/emacs.d][Purcell]]
+- [[https://github.com/bbatsov/prelude][Prelude]]
+- [[https://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]]
+
