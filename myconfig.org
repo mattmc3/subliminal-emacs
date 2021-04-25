@@ -141,4 +141,9 @@ To install fonts via homebrew, you can run the following commands:
     (setq exec-path-from-shell-variables '("PATH"))
     (exec-path-from-shell-initialize))
 #+end_src
-
+*** Smart tabs mode
+#+begin_src emacs-lisp :tangle no
+  ;; indent with tabs, align with spaces where enabled
+  ;;(use-package smart-tabs-mode
+  ;;  :ensure t)
+#+end_src

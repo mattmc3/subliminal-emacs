@@ -103,13 +103,16 @@ Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
 - [[https://stackoverflow.com/questions/3527142/how-do-you-redo-changes-after-undo-with-emacs][Stackoverflow]]
 
 #+begin_src emacs-lisp
-  ; in emacs 28, there's an undo-redo function, but until then we use a package
-  (use-package undo-fu
-    :ensure t
-    :config
-    (global-set-key (kbd "s-z") 'undo-fu-only-undo)
-    (global-set-key (kbd "s-Z") 'undo-fu-only-redo))
+  (global-set-key (kbd "s-z") 'undo-fu-only-undo)
+  (global-set-key (kbd "s-Z") 'undo-fu-only-redo)
+#+end_src
 
+** Multi-cursor
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "s-D") 'mc/mark-next-like-this-word)
+  (global-set-key (kbd "s-L") 'mc/edit-ends-of-lines)
 #+end_src
 
 ** Movement
