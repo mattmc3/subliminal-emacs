@@ -117,7 +117,7 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
   ;; https://emacs.wordpress.com/2007/01/16/quick-and-dirty-code-folding/
   (defun subl/toggle-code-folding (column)
     (interactive "P")
-    (set-selective-display 
+    (set-selective-display
       (if selective-display nil (or column 1))))
 #+end_src
 
@@ -133,30 +133,6 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
 #+end_src
 
 ** Feature initialization
-
-*** Package management
-
-We want to use external packages, so let's get that configured with [[https://github.com/jwiegley/use-package][use-package]]
-
-#+begin_src emacs-lisp
-  (defun subl/init-use-package ()
-    (require 'package)
-
-    (setq package-enable-at-startup nil)
-
-    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-    (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-    (add-to-list 'package-archives '("ublt" . "https://elpa.ubolonton.org/packages/") t)
-
-    (package-initialize)
-
-    (unless (package-installed-p 'use-package)
-      (package-refresh-contents)
-      (package-install 'use-package))
-
-    (setq use-package-always-ensure t))
-#+end_src
 
 *** Miscellaneous settings
 
@@ -202,22 +178,6 @@ We want to use external packages, so let's get that configured with [[https://gi
 
     ;; disable blink-matching-paren in favor of using colors
     (setq blink-matching-paren nil))
-#+end_src
-
-*** Miscellaneous packages
-
-- [[https://github.com/domtronn/all-the-icons.el][All the icons]]
-- [[https://github.com/redguardtoo/evil-nerd-commenter][Evil nerd commenter]] - to handle code commenting well, this plugin is necessary and does't require Evil despite its name
-- [[https://gitlab.com/ideasman42/emacs-undo-fu][Undo-fu]] package
-  - [[http://ergoemacs.org/emacs/emacs_best_redo_mode.html][Undo/redo saga]]
-  - [[https://stackoverflow.com/questions/3527142/how-do-you-redo-changes-after-undo-with-emacs][Stackoverflow]] undo question
-
-#+begin_src emacs-lisp
-  (defun subl/init-miscellaneous-packages ()
-    (use-package all-the-icons)
-    (use-package minimap)
-    (use-package undo-fu)
-    (use-package evil-nerd-commenter))
 #+end_src
 
 *** Splash screen
@@ -359,12 +319,10 @@ For (buffer) tabs, we use the excellent [[https://github.com/ema2159/centaur-tab
 
 * Initialize
 #+begin_src emacs-lisp
-  (defun subl/init-subliminal ()
+  (defun subl/init ()
     "Run all the init functions for subliminal"
     (interactive)
-    (subl/init-use-package)
     (subl/init-miscellaneous-settings)
-    (subl/init-miscellaneous-packages)
     (subl/init-splash-screen)
     (subl/init-encoding)
     (subl/init-editor-chrome)
@@ -377,7 +335,4 @@ For (buffer) tabs, we use the excellent [[https://github.com/ema2159/centaur-tab
     (subl/init-theme)
     (subl/init-multi-cursor)
     (subl/init-file-tabs))
-
-  ;; run init
-  (subl/init-subliminal)
 #+end_src
