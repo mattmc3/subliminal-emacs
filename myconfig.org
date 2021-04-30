@@ -46,6 +46,7 @@ To install fonts via homebrew, you can run the following commands:
 #+begin_src emacs-lisp
   ;; show tabs
   (global-whitespace-mode)
+  (setq-default show-trailing-whitespace t)
   (setq whitespace-style '(trailing tabs tab-mark))
 
   ;; trailing newlines are the bomb
