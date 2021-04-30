@@ -76,3 +76,91 @@ We may need to benchmark Emacs config. If so, tangle the following block:
 #+begin_src emacs-lisp
   (use-package undo-fu)
 #+end_src
+
+* Company mode
+
+Company (complete anything) is the way we'll do completions
+
+#+begin_src emacs-lisp
+  (use-package company)
+  (add-hook 'after-init-hook 'global-company-mode)
+#+end_src
+
+* Language Server Protocol
+
+#+begin_src emacs-lisp
+(use-package lsp-mode
+  :ensure t
+  :config
+
+  ;; make sure we have lsp-imenu everywhere we have LSP
+  (require 'lsp-imenu)
+  (add-hook 'lsp-after-open-hook 'lsp-enable-imenu)
+  ;; get lsp-python-enable defined
+  ;; NB: use either projectile-project-root or ffip-get-project-root-directory
+  ;;     or any other function that can be used to find the root directory of a project
+  (lsp-define-stdio-client lsp-python "python"
+                           #'projectile-project-root
+                           '("pyls"))
+
+  ;; make sure this is activated when python-mode is activated
+  ;; lsp-python-enable is created by macro above
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (lsp-python-enable)))
+
+  ;; lsp extras
+  (use-package lsp-ui
+    :ensure t
+    :config
+    (setq lsp-ui-sideline-ignore-duplicate t)
+    (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+  (use-package company-lsp
+    :config
+    (push 'company-lsp company-backends))
+
+  ;; NB: only required if you prefer flake8 instead of the default
+  ;; send pyls config via lsp-after-initialize-hook -- harmless for
+  ;; other servers due to pyls key, but would prefer only sending this
+  ;; when pyls gets initialised (:initialize function in
+  ;; lsp-define-stdio-client is invoked too early (before server
+  ;; start)) -- cpbotha
+  (defun lsp-set-cfg ()
+    (let ((lsp-cfg `(:pyls (:configurationSources ("flake8")))))
+      ;; TODO: check lsp--cur-workspace here to decide per server / project
+      (lsp--set-configuration lsp-cfg)))
+
+  (add-hook 'lsp-after-initialize-hook 'lsp-set-cfg))
+#+end_src
+
+* Ivy
+
+#+begin_src emacs-lisp
+  (use-package counsel)
+  (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    ;; number of result lines to display
+    (setq ivy-height 10)
+    ;; does not count candidates
+    (setq ivy-count-format "")
+    ;; no regexp by default
+    (setq ivy-initial-inputs-alist nil)
+    ;; configure regexp engine.
+    ;;(setq ivy-re-builders-alist
+    ;; allow input not in order
+    ;;'((t   . i y--regex-ignore-order)))
+#+end_src
+
+* Avy
+
+Avy lets you jump to a character on the screen by pressing ⌘-shift-; (⌘-:).
+Sublime has a package called Ace Jump Sublime, and VSCode does too.
+
++ [[https://github.com/ice9js/ace-jump-sublime][Ace jump sublime]]
++ [[https://github.com/abo-abo/avy][Avy]]
+
+#+begin_src emacs-lisp
+(use-package avy)
+#+end_src
+

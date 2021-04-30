@@ -132,6 +132,10 @@ Zoom in and out of text with plus/minus (⌘-= is + without the need for shift)
   (global-set-key (kbd "s-/") 'evilnc-comment-or-uncomment-lines)
 #+end_src
 
+#+begin_src emacs-lisp
+  (global-set-key (kbd "s-:") 'avy-goto-char)
+#+end_src
+
 ** File management
 
 #+begin_src emacs-lisp
