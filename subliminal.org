@@ -31,6 +31,7 @@ to your init.el file:
 
 #+begin_src emacs-lisp :tangle no
   (org-babel-load-file (expand-file-name "subliminal.org" user-emacs-directory))
+  (subliminal/init)
 #+end_src
 
 ** Notes
@@ -47,11 +48,12 @@ Emacs Use <TAB> to expand sections, and put Emacs lisp in source blocks.
 
 * Core
 Some of the default values for Emacs variables are for a whole different era of
-hardware. Set those to something more reasonable or modern. If you don't like
-these values, you can always set them again after calling this function.
+hardware or editing conventions. The core section if for changing built-in
+variables to something more reasonable or modern. If you don't like these
+values, you can always set them again after calling this function.
 
 #+begin_src emacs-lisp
-  (defun subliminal/set-better-variable-defaults ()
+  (defun subliminal/init-core ()
     "Change legacy values for variables. You can always change these back."
     ; https://github.com/bbatsov/prelude/blob/c52889dfa495583cb6d5204fa65b5b9ef0134866/init.el#L94-L99
     ; https://github.com/hrs/sensible-defaults.el/blob/main/sensible-defaults.el
@@ -78,6 +80,9 @@ these values, you can always set them again after calling this function.
     ; if text is selected, and you type some text, delete the selected text
     ; like most other editors do
     (delete-selection-mode t)
+
+    ; https://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html
+    (setq lexical-binding t)
     )
 #+end_src
 
@@ -92,8 +97,6 @@ Not everything we need to make Emacs amazing is built in. We want to use
 packages, so let's get that configured.
 
 #+begin_src emacs-lisp
-  (setq lexical-binding t)
-
   (require 'package)
 
   (setq package-enable-at-startup nil)
@@ -110,8 +113,6 @@ packages, so let's get that configured.
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
-
-  (setq gc-cons-threshold 100000000)
 
   ;;(use-package diminish :ensure t)
 
@@ -274,22 +275,10 @@ Now that we've made all the Subliminal functions to bend Emacs to our will, it's
 time to pull it all together.
 
 #+begin_src emacs-lisp
-(defun subliminal/init-all ()
+(defun subliminal/init ()
   "Run all the init functions for subliminal"
   (interactive)
-  (subl/init-miscellaneous-settings)
-  (subl/init-splash-screen)
-  (subl/init-encoding)
-  (subl/init-editor-chrome)
-  (subl/init-cursor)
-  (subl/init-scrolling)
-  (subl/init-save-all-on-focus-change)
-  (subl/init-save-editor-session)
-  (subl/init-keybindings)
-  (subl/init-indent-guides)
-  (subl/init-theme)
-  (subl/init-multi-cursor)
-  (subl/init-file-tabs))
+  (subliminal/init-core))
 #+end_src
 
 * Subliminal TODOs
