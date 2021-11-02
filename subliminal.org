@@ -282,10 +282,10 @@ time to pull it all together.
 #+end_src
 
 * Subliminal TODOs
-** TODO Add mini-map
-** TODO Add multiple cursor plugin
-** TODO Monokai theme
-** TODO Find/Replace shortcuts
-** TODO File tabs (centaur tabs)
-** TODO Frame geometry
-** TODO Save sessions
+- Add mini-map
+- TODO Add multiple cursor plugin
+- TODO Monokai theme
+- TODO Find/Replace shortcuts
+- TODO File tabs (centaur tabs)
+- TODO Frame geometry
+- TODO Save sessions
