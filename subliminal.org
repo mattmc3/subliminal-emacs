@@ -1,21 +1,95 @@
-#+TITLE: Subliminal Emacs Config
+#+TITLE: Subliminal Emacs
 #+STARTUP: content
 #+PROPERTY: header-args:emacs-lisp :tangle yes :results output silent
 
-* Notes
-This is an org mode literate config. Use <TAB> to expand sections, and put Emacs lisp in source blocks.
+* Intro
+Subliminal Emacs is an attempt to tame the Emacs beast with a modern and
+familiar configuration rather than the out-of-the-box Emacs experience. Using
+[[https://www.sublimetext.com][Sublime Text]] as a model, Subliminal sets
+the behavior, menus, UI, and keybingings to a more familiar configuration.
 
-* Subliminal TODOs
-** TODO Add mini-map
-** TODO Add multiple cursor plugin
-** TODO Monokai theme
-** TODO Find/Replace shortcuts
-** TODO File tabs (centaur tabs)
-** TODO Frame geometry
-** TODO Save sessions
+Subliminal is meant to be a starter config that allows you to build your own
+literal config from it using org-mode, but it is powerful and full featured
+as-is.
 
-* Setup
-We want to use packages, so let's get that configured
+** "This is the way" - The Mandalorian
+- Emacs is a great editor and has stood the test of time
+- Emacs is not configured very well out-of-the-box and adheres to its own outmodded standards
+- Emacs is infinitely configurable, and configuring it to work the way you want it to is encouraged
+- [[https://www.sublimetext.com][Other editors]] are also great, but may not be open source, or development is super slow, or may not stand the test of time
+- Emacs can be adapted to work more like [[https://www.sublimetext.com][other editors]] to make it easier to adopt and learn
+- Making Emacs work more like other editors is not wrong, and in fact can make Emacs accessible to more people
+- When there's a reason to go back to "the old way", it should be easy to remove the custom configurations
+- Emacs is your editor, use it your way!
+
+** Installation
+Subliminal is simply an org file that uses org-babel to tangle. If you're not
+familiar with all that org-mode lingo, this simply means that the code needed to
+configure emacs is embedded within this very documentation. To use Subliminal,
+simply add the subliminal.org file to your Emacs directory, and add this line
+to your init.el file:
+
+#+begin_src emacs-lisp :tangle no
+  (org-babel-load-file (expand-file-name "subliminal.org" user-emacs-directory))
+#+end_src
+
+** Notes
+Subliminal uses org mode and the concept of a literate config. If editing in
+Emacs Use <TAB> to expand sections, and put Emacs lisp in source blocks.
+
+** Reference configs
+- [[https://github.com/frap/emacs-literate/blob/master/readme.org][frap]]
+- [[https://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]]
+- [[https://github.com/purcell/emacs.d][Purcell]]
+- [[https://github.com/hlissner/doom-emacs][Doom]]
+- [[https://github.com/bbatsov/prelude][Prelude]]
+- [[https://github.com/rougier/nano-emacs][N Λ N O]]
+
+* Core
+Some of the default values for Emacs variables are for a whole different era of
+hardware. Set those to something more reasonable or modern. If you don't like
+these values, you can always set them again after calling this function.
+
+#+begin_src emacs-lisp
+  (defun subliminal/set-better-variable-defaults ()
+    "Change legacy values for variables. You can always change these back."
+    ; https://github.com/bbatsov/prelude/blob/c52889dfa495583cb6d5204fa65b5b9ef0134866/init.el#L94-L99
+    ; https://github.com/hrs/sensible-defaults.el/blob/main/sensible-defaults.el
+
+    ; reduce the frequency of garbage collection by making it happen on
+    ; each 50MB of allocated data (the default is on every 0.76MB)"
+    (setq gc-cons-threshold 50000000)
+
+    ; warn when opening files bigger than 100MB
+    (setq large-file-warning-threshold 100000000)
+
+    ; when opening a file, always follow symlinks."
+    (setq vc-follow-symlinks t)
+
+    ; treat CamelCaseWords as separate words in every programming mode
+    (add-hook 'prog-mode-hook 'subword-mode)
+
+    ; don't assume that sentences should have two spaces after periods
+    (setq sentence-end-double-space nil)
+
+    ; https://www.emacswiki.org/emacs/TransientMarkMode
+    (transient-mark-mode t)
+
+    ; if text is selected, and you type some text, delete the selected text
+    ; like most other editors do
+    (delete-selection-mode t)
+    )
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun subliminal/open-files-from-home-directory ()
+    "When opening a file, start searching at the user's home directory."
+    (setq default-directory "~/"))
+#+end_src
+
+* Packages
+Not everything we need to make Emacs amazing is built in. We want to use
+packages, so let's get that configured.
 
 #+begin_src emacs-lisp
   (setq lexical-binding t)
@@ -193,3 +267,36 @@ On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
   ;;(setq centaur-tabs-gray-out-icons 'buffer)
   ;;(setq centaur-tabs-style "slant")
 #+end_src
+
+
+* Init
+Now that we've made all the Subliminal functions to bend Emacs to our will, it's
+time to pull it all together.
+
+#+begin_src emacs-lisp
+(defun subliminal/init-all ()
+  "Run all the init functions for subliminal"
+  (interactive)
+  (subl/init-miscellaneous-settings)
+  (subl/init-splash-screen)
+  (subl/init-encoding)
+  (subl/init-editor-chrome)
+  (subl/init-cursor)
+  (subl/init-scrolling)
+  (subl/init-save-all-on-focus-change)
+  (subl/init-save-editor-session)
+  (subl/init-keybindings)
+  (subl/init-indent-guides)
+  (subl/init-theme)
+  (subl/init-multi-cursor)
+  (subl/init-file-tabs))
+#+end_src
+
+* Subliminal TODOs
+** TODO Add mini-map
+** TODO Add multiple cursor plugin
+** TODO Monokai theme
+** TODO Find/Replace shortcuts
+** TODO File tabs (centaur tabs)
+** TODO Frame geometry
+** TODO Save sessions
