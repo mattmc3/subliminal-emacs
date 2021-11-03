@@ -111,6 +111,32 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
   (save-some-buffers t))
 #+end_src
 
+*** Tab key behavior
+
++ [[https://www.emacswiki.org/emacs/IndentationBasics][Indentation basics]]
+
+#+begin_src emacs-lisp
+  (defun subl/init-tab-key-behavior ()
+    (interactive)
+    ;; smart tab behavior - indent or complete
+    (setq tab-always-indent 'complete)
+    ;; use spaces
+    (setq-default indent-tabs-mode nil)
+    ;; if there's tabs, make them obscene
+    (setq tab-width 8))
+#+end_src
+
+*** Delimiter behavior
+
+#+begin_src emacs-lisp :tangle no
+  (defun subl/init-delimiter-behavior ()
+    (interactive)
+    ;; disable blink-matching-paren in favor of using colors
+    ;;(setq blink-matching-paren nil)
+    (show-paren-mode 1)
+    (setq show-paren-delay 0))
+#+end_src
+
 *** Code folding
 
 #+begin_src emacs-lisp
@@ -137,47 +163,41 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
 *** Miscellaneous settings
 
 #+begin_src emacs-lisp
-  (defun subl/init-miscellaneous-settings ()
-    ;; write over selected text on input... like modern editors should
-    (delete-selection-mode t)
+    (defun subl/init-miscellaneous-settings ()
+      ;; write over selected text on input... like modern editors should
+      (delete-selection-mode t)
 
-    ;; Don't persist a custom file
-    (setq custom-file null-device)         ; use a temp file as a placeholder
-    (setq custom-safe-themes t)            ; mark all themes as safe, since we can't persist now
-    (setq enable-local-variables :all)     ; fix =defvar= warnings
+      ;; Don't persist a custom file
+      (setq custom-file null-device)         ; use a temp file as a placeholder
+      (setq custom-safe-themes t)            ; mark all themes as safe, since we can't persist now
+      (setq enable-local-variables :all)     ; fix =defvar= warnings
 
-    ;; revert buffers automatically when underlying files are changed externally
-    (global-auto-revert-mode t)
+      ;; revert buffers automatically when underlying files are changed externally
+      (global-auto-revert-mode t)
 
-    ;; stop emacs from littering the file system with backup files
-    (setq make-backup-files nil
-          auto-save-default nil
-          create-lockfiles nil)
+      ;; stop emacs from littering the file system with backup files
+      (setq make-backup-files nil
+      auto-save-default nil
+      create-lockfiles nil)
 
-    ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html
-    (setq lexical-binding t)
+      ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html
+      (setq lexical-binding t)
 
-    ;; The default is 600
-    (setq max-lisp-eval-depth 2000)
+      ;; The default is 600
+      (setq max-lisp-eval-depth 2000)
 
-    ;; Always load newest byte code
-    (setq load-prefer-newer t)
+      ;; Always load newest byte code
+      (setq load-prefer-newer t)
 
-    ;; reduce the frequency of garbage collection by making it happen on
-    ;; each 50MB of allocated data (the default is on every 0.76MB)
-    (setq gc-cons-threshold 50000000)
+      ;; reduce the frequency of garbage collection by making it happen on
+      ;; each 50MB of allocated data (the default is on every 0.76MB)
+      (setq gc-cons-threshold 50000000)
 
-    ;; warn when opening files bigger than 100MB
-    (setq large-file-warning-threshold 100000000)
+      ;; warn when opening files bigger than 100MB
+      (setq large-file-warning-threshold 100000000)
 
-    ;; always allow 'y' instead of 'yes'
-    (defalias 'yes-or-no-p 'y-or-n-p)
-
-    ;; smart tab behavior - indent or complete
-    (setq tab-always-indent 'complete)
-
-    ;; disable blink-matching-paren in favor of using colors
-    (setq blink-matching-paren nil))
+      ;; always allow 'y' instead of 'yes'
+      (defalias 'yes-or-no-p 'y-or-n-p))
 #+end_src
 
 *** Splash screen
@@ -253,7 +273,9 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
 
 #+begin_src emacs-lisp
   (defun subl/init-keybindings ()
-    (org-babel-load-file (expand-file-name "subliminal-keys.org" user-emacs-directory)))
+    ;;(require 'mac-key-mode)
+    (use-package mac-key-mode))
+    ;;(org-babel-load-file (expand-file-name "subliminal-keys.org" user-emacs-directory)))
 #+end_src
 
 *** Indent guides
@@ -273,13 +295,30 @@ This is an org mode literate config. Use <TAB> to expand sections, and put Emacs
 *** Theme
 
 #+begin_src emacs-lisp
-  (defun subl/init-theme ()
-    (use-package monokai-pro-theme
-      :ensure t
-      :config
-      (load-theme 'monokai-pro t)))
+  (setq doom-theme 'doom-monokai-pro)
 #+end_src
 
+#+begin_src emacs-lisp
+  (defun subl/init-theme ()
+    (use-package doom-themes
+      :config
+      ;; Global settings (defaults)
+      (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+            doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+      ;; Enable flashing mode-line on errors
+      (doom-themes-visual-bell-config)
+
+      ;; Enable custom neotree theme (all-the-icons must be installed!)
+      (doom-themes-neotree-config)
+      ;; or for treemacs users
+      (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+      (doom-themes-treemacs-config)
+
+      ;; Corrects (and improves) org-mode's native fontification.
+      (doom-themes-org-config))
+      (load-theme 'doom-city-lights t))
+#+end_src
 *** Multiple cursors
 
 - [[https://emacs.stackexchange.com/questions/751/fundamentals-of-multiple-cursors][Multiple cursors stackexchange question]]
@@ -332,7 +371,9 @@ For (buffer) tabs, we use the excellent [[https://github.com/ema2159/centaur-tab
     (subl/init-save-editor-session)
     (subl/init-keybindings)
     (subl/init-indent-guides)
+    (subl/init-tab-key-behavior)
+    ;; (subl/init-delimiter-behavior)
     (subl/init-theme)
     (subl/init-multi-cursor)
     (subl/init-file-tabs))
-#+end_src
+#+end_sr

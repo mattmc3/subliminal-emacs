@@ -95,9 +95,9 @@ To install fonts via homebrew, you can run the following commands:
 *** Rainbow delimiters
 #+begin_src emacs-lisp
 ;; match paired brackets with colors
-(use-package rainbow-delimiters
-  :ensure t
-  :hook (prog-mode . rainbow-delimiters-mode))
+;; (use-package rainbow-delimiters
+;;   :ensure t
+;;   :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
 *** Language server processor (LSP)

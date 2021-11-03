@@ -25,5 +25,6 @@ Install Emacs-Plus on a Mac via Homebrew
 - [[https://github.com/natecox/dotfiles/tree/master/emacs/emacs.d][Nate Cox]]
 - [[https://github.com/purcell/emacs.d][Purcell]]
 - [[https://github.com/bbatsov/prelude][Prelude]]
+- [[https://www.sandeepnambiar.com/my-minimal-emacs-setup/][Sandeep Nambiar]]
 - [[https://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]]
 

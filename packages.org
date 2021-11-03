@@ -77,6 +77,18 @@ We may need to benchmark Emacs config. If so, tangle the following block:
   (use-package undo-fu)
 #+end_src
 
+* Delimiters
+
+#+begin_src emacs-lisp
+  (use-package smartparens
+  :ensure t
+  :config
+  (progn
+    (require 'smartparens-config)
+    (smartparens-global-mode 1)
+    (show-paren-mode t)))
+#+end_src
+
 * Company mode
 
 Company (complete anything) is the way we'll do completions
@@ -88,7 +100,7 @@ Company (complete anything) is the way we'll do completions
 
 * Language Server Protocol
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package lsp-mode
   :ensure t
   :config
