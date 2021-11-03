@@ -48,15 +48,31 @@ Emacs Use <TAB> to expand sections, and put Emacs lisp in source blocks.
 - [[https://github.com/natecox/dotfiles/blob/master/workspaces/shared/symlinks/emacs/.emacs.d/nathancox.org][Nate Cox]]
 
 * Core
+** Early init
+In early-init.el, you will want to load subliminal-early.el. You can read more
+about [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][early-init.el here]].
+
+In ~/.config/emacs/early-init.el or ~/.emacs.d/early-init.el add the following:
+#+begin_src emacs-lisp :tangle no
+  (load-file (expand-file-name "subliminal-early.el" user-emacs-directory))
+#+end_src
+
+#+begin_src emacs-lisp :tangle subliminal-early.el
+  ;;; -*- lexical-binding: t; -*-
+  (setq package-enable-at-startup nil)
+#+end_src
+
 Let's start off right with the lexical binding comment in the header. You can
 read more about
 [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html][lexical binding here.]]
 
+** Lexical binding
 #+begin_src emacs-lisp
   ;;; -*- lexical-binding: t; -*-
   (setq lexical-binding t)
 #+end_src
 
+** Better defaults
 Some of the default values for Emacs variables are for a whole different era of
 hardware or editing conventions. The core section if for changing built-in
 variables to something more reasonable or modern. If you don't like these
@@ -97,11 +113,14 @@ values, you can always set them again after calling this function.
     ;; always load newest byte code
     (setq load-prefer-newer t)
 
-    ;; The default is 600
+    ;; the default is 600
     (setq max-lisp-eval-depth 2000)
 
-    ; When opening a file, start searching at the user's home directory
+    ; when opening a file, start searching at the user's home directory
     (setq default-directory "~/")
+
+    ;; add highlight for current line
+    (global-hl-line-mode +1)
 
     ;; allow 'y/n' instead of 'yes/no'
     (defalias 'yes-or-no-p 'y-or-n-p))
@@ -115,23 +134,34 @@ packages, so let's get that configured.
 manage lazy loading our packages.
 
 #+begin_src emacs-lisp
-  (defun subliminal/init-use-package ()
-    (require 'package)
+  (require 'package)
 
-    (setq package-enable-at-startup nil)
+  (setq package-enable-at-startup nil)
 
-    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-    (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-    (add-to-list 'package-archives '("ublt" . "https://elpa.ubolonton.org/packages/") t)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (add-to-list 'package-archives '("ublt" . "https://elpa.ubolonton.org/packages/") t)
 
-    (when (< emacs-major-version 27)
-      (package-initialize))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  (setq use-package-always-ensure t)
+#+end_src
 
-    (unless (package-installed-p 'use-package)
-      (package-refresh-contents)
-      (package-install 'use-package))
-    (setq use-package-always-ensure t))
+* Unicode
+Let's make sure that we are using UTF-8 for all the things.
+#+begin_src emacs-lisp
+  (defun subliminal/init-file-encoding ()
+    ;; default to utf-8 for all the things
+    (set-charset-priority 'unicode)
+    (setq locale-coding-system   'utf-8)
+    (prefer-coding-system        'utf-8)
+    (set-default-coding-systems  'utf-8)
+    (set-terminal-coding-system  'utf-8)
+    (set-keyboard-coding-system  'utf-8)
+    (set-language-environment    'utf-8)
+    (set-selection-coding-system 'utf-8))
 #+end_src
 
 * User Interface
@@ -147,6 +177,8 @@ Most other editors do bars instead of a box for the cursor.
 [[https://www.emacswiki.org/emacs/SmoothScrolling][Smooth scrolling]]
 #+begin_src emacs-lisp
   (defun subliminal/init-scrolling ()
+    ;; hide scrollbars
+    (scroll-bar-mode -1)
     ;; set scrolling to be nicer
     (setq scroll-margin 30)
     (setq scroll-step 1)
@@ -171,7 +203,44 @@ Do away with the 90's era toolbar.
     (tool-bar-mode -1))
 #+end_src
 
+* Theme
+
+#+begin_src emacs-lisp
+  ; https://github.com/hlissner/emacs-doom-themes
+  ; doom-city-lights
+  (setq doom-theme 'doom-nord)
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun subliminal/init-theme ()
+    (use-package doom-themes
+      :config
+      ;; Global settings (defaults)
+      (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+            doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+      ;; Enable flashing mode-line on errors
+      (doom-themes-visual-bell-config)
+
+      ;; Enable custom neotree theme (all-the-icons must be installed!)
+      (doom-themes-neotree-config)
+      ;; or for treemacs users
+      (setq doom-themes-treemacs-theme "doom-colors") ; use the colorful treemacs theme
+      (doom-themes-treemacs-config)
+
+      ;; Corrects (and improves) org-mode's native fontification.
+      (doom-themes-org-config))
+      (load-theme doom-theme t))
+#+end_src
+
 * Features
+** Save sessions
+Saving sessions in Emacs is called saving the "desktop".
+#+begin_src emacs-lisp
+  (defun subliminal/init-save-sessions ()
+    (desktop-save-mode 1))
+#+end_src
+
 ** Autosave
 
 
@@ -185,6 +254,17 @@ You can save your personalized custom settings in another file.
       (write-region "" nil custom-file))
     (load-file custom-file))
 #+end_src
+
+Some examples of things you might want to add to that file:
+
+#+begin_src emacs-lisp :tangle no
+  ;; font
+  (ignore-errors (set-frame-font "Meslo LG S for Powerline 13"))
+
+  ;; trailing newlines are the bomb
+  (setq require-final-newline t)
+#+end_src
+
 
 
 
@@ -268,14 +348,6 @@ On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
   (global-set-key (kbd "s-x") 'kill-region)
 #+end_src
 
-** Subliminal default theme is Monokai
-#+begin_src emacs-lisp
-(use-package monokai-pro-theme
-  :ensure t
-  :config
-  (load-theme 'monokai-pro t))
-#+end_src
-
 * Packages
 ** All the icons
 #+begin_src emacs-lisp
@@ -319,12 +391,14 @@ time to pull it all together.
   "Run all the init functions for subliminal"
   (interactive)
   (subliminal/init-core)
-  (subliminal/init-use-package)
+  (subliminal/init-file-encoding)
   (subliminal/init-custom-file)
   (subliminal/init-cursor)
   (subliminal/init-scrolling)
   (subliminal/init-splash-screen)
-  (subliminal/init-toolbar))
+  (subliminal/init-toolbar)
+  (subliminal/init-theme)
+  (subliminal/init-save-sessions))
 #+end_src
 
 * Subliminal TODOs
