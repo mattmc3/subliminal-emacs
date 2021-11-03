@@ -134,16 +134,63 @@ manage lazy loading our packages.
     (setq use-package-always-ensure t))
 #+end_src
 
-* File features
+* User Interface
+** Cursor
+Most other editors do bars instead of a box for the cursor.
+#+begin_src emacs-lisp
+  (defun subliminal/init-cursor ()
+    ;; make the cursor a bar, not a blinking box
+    (setq-default cursor-type 'bar))
+#+end_src
 
-You can save your personal custom settings in another file.
+** Scrolling
+[[https://www.emacswiki.org/emacs/SmoothScrolling][Smooth scrolling]]
+#+begin_src emacs-lisp
+  (defun subliminal/init-scrolling ()
+    ;; set scrolling to be nicer
+    (setq scroll-margin 30)
+    (setq scroll-step 1)
+    (setq scroll-conservatively 10000)
+    (setq auto-window-vscroll nil))
+#+end_src
+
+** Splash screen
+Doom Emacs and other configs use a slash screen, but let's just jump right into
+the editor.
+#+begin_src emacs-lisp
+  (defun subliminal/init-splash-screen ()
+    ;; turn off the splash screen
+    (setq inhibit-splash-screen t))
+#+end_src
+
+** Toolbar
+Do away with the 90's era toolbar.
+#+begin_src emacs-lisp
+  (defun subliminal/init-toolbar ()
+    ;; make the cursor a bar, not a blinking box
+    (tool-bar-mode -1))
+#+end_src
+
+* Features
+** Autosave
+
+
+** Customization file
+You can save your personalized custom settings in another file.
 
 #+begin_src emacs-lisp
   (defun subliminal/init-custom-file ()
-    (setq custom-file (expand-file-name "myconfig.org" user-emacs-directory))
-    (write-region "" nil custom-file)
+    (setq custom-file (expand-file-name "myconfig.el" user-emacs-directory))
+    (unless (file-exists-p custom-file)
+      (write-region "" nil custom-file))
     (load-file custom-file))
 #+end_src
+
+
+
+
+
+
 
 ** Mac configuration
 On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
@@ -174,24 +221,6 @@ On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
   (setq make-backup-files nil
   auto-save-default nil
   create-lockfiles nil)
-#+end_src
-
-** Emacs editor style
-#+begin_src emacs-lisp
-  ;; I like my cursor to be a bar, not a blinking box
-  (setq-default cursor-type 'bar)
-
-  ;; let's not see the toolbar
-  (tool-bar-mode -1)
-
-  ;; turn off the splash screen
-  (setq inhibit-splash-screen t)
-
-  ;; set scrolling to be nicer
-  (setq scroll-margin 30)
-  (setq scroll-step 1)
-  (setq scroll-conservatively 10000)
-  (setq auto-window-vscroll nil)
 #+end_src
 
 * Org mode
@@ -291,7 +320,11 @@ time to pull it all together.
   (interactive)
   (subliminal/init-core)
   (subliminal/init-use-package)
-  (subliminal/init-custom-file))
+  (subliminal/init-custom-file)
+  (subliminal/init-cursor)
+  (subliminal/init-scrolling)
+  (subliminal/init-splash-screen)
+  (subliminal/init-toolbar))
 #+end_src
 
 * Subliminal TODOs
