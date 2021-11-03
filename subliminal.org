@@ -45,8 +45,18 @@ Emacs Use <TAB> to expand sections, and put Emacs lisp in source blocks.
 - [[https://github.com/hlissner/doom-emacs][Doom]]
 - [[https://github.com/bbatsov/prelude][Prelude]]
 - [[https://github.com/rougier/nano-emacs][N Λ N O]]
+- [[https://github.com/natecox/dotfiles/blob/master/workspaces/shared/symlinks/emacs/.emacs.d/nathancox.org][Nate Cox]]
 
 * Core
+Let's start off right with the lexical binding comment in the header. You can
+read more about
+[[https://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html][lexical binding here.]]
+
+#+begin_src emacs-lisp
+  ;;; -*- lexical-binding: t; -*-
+  (setq lexical-binding t)
+#+end_src
+
 Some of the default values for Emacs variables are for a whole different era of
 hardware or editing conventions. The core section if for changing built-in
 variables to something more reasonable or modern. If you don't like these
@@ -54,7 +64,7 @@ values, you can always set them again after calling this function.
 
 #+begin_src emacs-lisp
   (defun subliminal/init-core ()
-    "Change legacy values for variables. You can always change these back."
+    "Set variables to more modern defaults"
     ; https://github.com/bbatsov/prelude/blob/c52889dfa495583cb6d5204fa65b5b9ef0134866/init.el#L94-L99
     ; https://github.com/hrs/sensible-defaults.el/blob/main/sensible-defaults.el
 
@@ -81,47 +91,58 @@ values, you can always set them again after calling this function.
     ; like most other editors do
     (delete-selection-mode t)
 
-    ; https://www.gnu.org/software/emacs/manual/html_node/elisp/Lexical-Binding.html
-    (setq lexical-binding t)
-    )
+    ;; revert buffers automatically when underlying files are changed externally
+    (global-auto-revert-mode t)
+
+    ;; always load newest byte code
+    (setq load-prefer-newer t)
+
+    ;; The default is 600
+    (setq max-lisp-eval-depth 2000)
+
+    ; When opening a file, start searching at the user's home directory
+    (setq default-directory "~/")
+
+    ;; allow 'y/n' instead of 'yes/no'
+    (defalias 'yes-or-no-p 'y-or-n-p))
 #+end_src
 
-#+begin_src emacs-lisp
-  (defun subliminal/open-files-from-home-directory ()
-    "When opening a file, start searching at the user's home directory."
-    (setq default-directory "~/"))
-#+end_src
-
-* Packages
+* use-package
 Not everything we need to make Emacs amazing is built in. We want to use
 packages, so let's get that configured.
 
+[[https://github.com/jwiegley/use-package][use-package]] is a nice way to
+manage lazy loading our packages.
+
 #+begin_src emacs-lisp
-  (require 'package)
+  (defun subliminal/init-use-package ()
+    (require 'package)
 
-  (setq package-enable-at-startup nil)
-  (setq max-lisp-eval-depth 2000)
+    (setq package-enable-at-startup nil)
 
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-  (add-to-list 'package-archives '("ublt" . "https://elpa.ubolonton.org/packages/") t)
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+    (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+    (add-to-list 'package-archives '("ublt" . "https://elpa.ubolonton.org/packages/") t)
 
-  (when (< emacs-major-version 27)
-    (package-initialize))
+    (when (< emacs-major-version 27)
+      (package-initialize))
 
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
+    (unless (package-installed-p 'use-package)
+      (package-refresh-contents)
+      (package-install 'use-package))
+    (setq use-package-always-ensure t))
+#+end_src
 
-  ;;(use-package diminish :ensure t)
+* File features
 
-  ;;(use-package exec-path-from-shell
-  ;;  :ensure t
-  ;;  :config
-  ;;  (setenv "SHELL" "/usr/local/bin/zsh")
-  ;;  (setq exec-path-from-shell-variables '("PATH"))
-  ;;  (exec-path-from-shell-initialize))
+You can save your personal custom settings in another file.
+
+#+begin_src emacs-lisp
+  (defun subliminal/init-custom-file ()
+    (setq custom-file (expand-file-name "myconfig.org" user-emacs-directory))
+    (write-region "" nil custom-file)
+    (load-file custom-file))
 #+end_src
 
 ** Mac configuration
@@ -143,9 +164,6 @@ On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
   (set-selection-coding-system 'utf-8)
   (prefer-coding-system 'utf-8)
   (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
-
-  ;; write over selected text on input... like modern editors should
-  (delete-selection-mode t)
 
   ;; Don't persist a custom file
   (setq custom-file null-device)         ; use a temp file as a placeholder
@@ -236,13 +254,6 @@ On a Mac, we want to use ⌘-Cmd as Super, and ⌥-Opt as Meta.
     :ensure t)
 #+end_src
 
-** Minimap
-#+begin_src emacs-lisp
-  (use-package minimap
-    :ensure t)
-  (minimap-mode)
-#+end_src
-
 ** Centaur Tabs
 [[https://github.com/ema2159/centaur-tabs][Centaur Tabs]]
 #+begin_src emacs-lisp
@@ -278,7 +289,9 @@ time to pull it all together.
 (defun subliminal/init ()
   "Run all the init functions for subliminal"
   (interactive)
-  (subliminal/init-core))
+  (subliminal/init-core)
+  (subliminal/init-use-package)
+  (subliminal/init-custom-file))
 #+end_src
 
 * Subliminal TODOs
