@@ -53,20 +53,8 @@
 (global-set-key [M-drag-mouse-1] #'ignore)
 (global-set-key [M-mouse-1]      #'mouse-set-point)
 
-;; Make emacs keybindings work like other Mac apps
-;; https://osdn.net/projects/macwiki/svn/view/zenitani/CarbonEmacs/src/lisp/mac-key-mode.el?root=macwiki&view=markup
-(global-set-key [(super up)] 'beginning-of-buffer)
-(global-set-key [(super down)] 'end-of-buffer)
-(global-set-key [(super left)] 'beginning-of-line)
-(global-set-key [(super right)] 'end-of-line)
-(global-set-key (kbd "s-s") 'save-buffer)
-(global-set-key (kbd "s-a") 'mark-whole-buffer)
-(global-set-key (kbd "s-z") 'undo)
-(global-set-key (kbd "s-c") 'kill-ring-save)
-(global-set-key (kbd "s-v") 'yank)
-(global-set-key (kbd "s-x") 'kill-region)
-
-;; sublime ⌘-P opens the command window
-(global-set-key (kbd "s-P") 'execute-extended-command)
+;; make home and end work
+(global-set-key (kbd "<home>") 'beginning-of-line)
+(global-set-key (kbd "<end>") 'end-of-line)
 
 (provide 'init-editing-utils)
