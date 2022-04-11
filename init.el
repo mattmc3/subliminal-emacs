@@ -45,6 +45,7 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 ;; first
+(require 'init-const)
 (require 'init-package)
 
 ;; other includes
@@ -59,8 +60,12 @@
 (require 'init-projectile)
 (require 'init-recentf)
 (require 'init-sessions)
+(require 'init-scrolling)
 (require 'init-tabs)
 (require 'init-taskpaper)
 (require 'init-theme)
 (require 'init-undo)
 (require 'init-whitespace)
+
+(when sys/macp
+  (require 'init-macos))
