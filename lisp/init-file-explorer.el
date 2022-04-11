@@ -91,7 +91,8 @@
         ("C-x t d"   . treemacs-select-directory)
         ("C-x t B"   . treemacs-bookmark)
         ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
+        ("C-x t M-t" . treemacs-find-tag)
+        ("s-b"       . treemacs)))
 
 (use-package treemacs-projectile
   :after (treemacs projectile)
