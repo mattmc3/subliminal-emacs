@@ -1,4 +1,13 @@
-myconfig.el
-subliminal.el
-elpa/
+*.elc
+/.persistent-scratch
+/projectile-bookmarks.eld
+/projectile.cache
 auto-save-list/
+cache/
+elpa/
+history
+package-quickstart.el
+persistent-scratch/
+recentf
+straight/
+transient/

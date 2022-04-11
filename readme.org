@@ -19,3 +19,9 @@
 - [[https://github.com/purcell/emacs.d][Purcell]]
 - [[https://github.com/hlissner/doom-emacs][Doom]]
 - [[https://github.com/bbatsov/prelude][Prelude]]
+- [[https://github.com/olivertaylor/dotfiles/blob/master/emacs/cookbook/minimum.el][olivertaylor minimum.el]]
+
+** Other links
+- [[https://learnxinyminutes.com/docs/elisp/][lean elisp in y minutes]]
+- [[https://dougie.io/emacs/indentation/][whitespace, indents, and tabs]]
+- [[http://www.howardism.org/Technical/Emacs/eshell-fun.html][eshell]]
