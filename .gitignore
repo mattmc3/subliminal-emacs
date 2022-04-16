@@ -1,4 +1,5 @@
 *.elc
+/eln-cache
 /.persistent-scratch
 /projectile-bookmarks.eld
 /projectile.cache
