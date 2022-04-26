@@ -13,6 +13,18 @@
   :init
   (vertico-mode))
 
+;; Extended completion utilities
+(use-package consult
+  :config
+  (progn
+    (setq read-buffer-completion-ignore-case t
+      read-file-name-completion-ignore-case t
+      completion-ignore-case t)))
+
+(global-set-key [rebind switch-to-buffer] #'consult-buffer)
+(global-set-key (kbd "C-c j") #'consult-line)
+(global-set-key (kbd "C-c i") #'consult-imenu)
+
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
   :init
