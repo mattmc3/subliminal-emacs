@@ -111,4 +111,6 @@
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
 
-(provide 'init-file-explorer)
+(setq imenu-auto-rescan t)
+
+(provide 'init-treeview)
