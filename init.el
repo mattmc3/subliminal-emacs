@@ -51,8 +51,9 @@
 ;; other includes
 (require 'init-commenting)
 (require 'init-editing-utils)
-(require 'init-file-explorer)
+(require 'init-treeview)
 (require 'init-fish)
+(require 'init-git)
 (require 'init-lisp)
 (require 'init-minibuffer)
 (require 'init-misc)
@@ -62,6 +63,7 @@
 (require 'init-scrolling)
 (require 'init-sessions)
 (require 'init-shell)
+(require 'init-snippets)
 (require 'init-tabs)
 (require 'init-taskpaper)
 (require 'init-theme)
