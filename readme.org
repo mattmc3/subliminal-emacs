@@ -1,8 +1,10 @@
-#+TITLE: Subliminal Emacs
+# -*- fill-column: 120 org-list-indent-offset: 1 toc-org-max-depth: 2 -*-
 
 * Subliminal Emacs
 
-** Manifesto
+* Content                                                                            :TOC:noexport:
+
+* Reasoning
 - Emacs is a great editor and has stood the test of time
 - Emacs is not very easy to use out of the box and adheres to its own standards
 - Emacs is infinitely configurable, and configuring it to work the way you want it to is encouraged
@@ -12,16 +14,16 @@
 - When there's a reason to do it "the Emacs way", it should be easy to remove the emulation
 - Emacs is your editor, use it your way!
 
-** Reference configs
-- [[https://github.com/natecox/dotfiles/tree/master/emacs/emacs.d][Nate Cox]]
+* Reference configs
+- [[https://github.com/purcell/emacs.d][Purcell]]
+- [[https://github.com/natecox/dotfiles/tree/master/emacs/.emacs.d][Nate Cox]]
 - [[https://github.com/frap/emacs-literate/blob/master/readme.org][frap]]
 - [[https://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]]
-- [[https://github.com/purcell/emacs.d][Purcell]]
 - [[https://github.com/hlissner/doom-emacs][Doom]]
 - [[https://github.com/bbatsov/prelude][Prelude]]
 - [[https://github.com/olivertaylor/dotfiles/blob/master/emacs/cookbook/minimum.el][olivertaylor minimum.el]]
 
-** Other links
+* Other links
 - [[https://learnxinyminutes.com/docs/elisp/][lean elisp in y minutes]]
 - [[https://dougie.io/emacs/indentation/][whitespace, indents, and tabs]]
 - [[http://www.howardism.org/Technical/Emacs/eshell-fun.html][eshell]]
