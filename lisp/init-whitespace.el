@@ -8,6 +8,9 @@
 
 ;;; Code:
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(setq require-final-newline t)
+
 ;; Making electric-indent behave sanely
 (setq-default electric-indent-inhibit t)
 
