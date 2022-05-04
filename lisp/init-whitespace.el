@@ -18,10 +18,8 @@
 ;; removing 1 space at a time.
 (setq backward-delete-char-untabify-method 'hungry)
 
-(progn
-  (setq whitespace-style '(face tabs tab-mark trailing))
-  (setq whitespace-display-mappings
-    '((tab-mark 9 [9655 9] [92 9])))) ; 124 is the ascii ID for '\|'
-(global-whitespace-mode) ; Enable whitespace mode everywhere
+;; https://emacs.stackexchange.com/questions/54305/show-white-spaces-only-when-region-is-selected
+(use-package whitespace4r
+  :straight (whitespace4r :type git :host github :repo "twlz0ne/whitespace4r.el"))
 
 (provide 'init-whitespace)
