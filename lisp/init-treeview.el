@@ -65,11 +65,12 @@
           treemacs-width                           35
           treemacs-width-increment                 1
           treemacs-width-is-initially-locked       t
-          treemacs-workspace-switch-cleanup        nil)
+          treemacs-workspace-switch-cleanup        nil
+          scroll-margin                            0)
 
     ;; The default width and height of the icons is 22 pixels. If you are
     ;; using a Hi-DPI display, uncomment this to double the icon size.
-    ;;(treemacs-resize-icons 44)
+    (treemacs-resize-icons 12)
 
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)
