@@ -57,4 +57,42 @@
 (global-set-key (kbd "<home>") 'beginning-of-line)
 (global-set-key (kbd "<end>") 'end-of-line)
 
+;; File shortcuts
+(setq use-file-dialog t)
+(global-set-key (kbd "s-o") 'menu-find-file-existing)
+(defadvice find-file-read-args (around find-file-read-args-always-use-dialog-box act)
+  "Simulate invoking menu item as if by the mouse; see `use-dialog-box'."
+ (let ((last-nonmenu-event nil))
+       ad-do-it))
+;; (global-set-key (kbd "s-n") 'kill-ring-save)
+(defun subl/close-window ()
+  "Delete the selected frame. If the last one, kill Emacs."
+  (interactive)
+  (condition-case nil (delete-frame) (error (save-buffers-kill-terminal))))
+(global-set-key (kbd "s-q") 'subl/close-window)
+
+;; Edit shortcuts
+(defun subl/insert-line-above ()
+  "Insert a new line above the current one and go there"
+  (interactive)
+  (move-beginning-of-line nil)
+  (newline-and-indent)
+  (forward-line -1)
+  (indent-according-to-mode))
+(global-set-key (kbd "<s-S-return>") 'subl/insert-line-above)
+
+(defun subl/insert-line-below ()
+  "Insert a new line below the current one and go there"
+  (interactive)
+  (move-end-of-line nil)
+  (newline-and-indent)
+  (indent-according-to-mode))
+(global-set-key (kbd "<s-return>") 'subl/insert-line-below)
+
+(defun subl/join-line ()
+  "Join the line below with the current line"
+  (interactive)
+  (join-line -1))
+(global-set-key (kbd "s-J") 'subl/join-line)
+
 (provide 'init-editing-utils)
