@@ -69,7 +69,7 @@
 (require 'init-projectile)
 (require 'init-recentf)
 (require 'init-scrolling)
-(require 'init-sessions)
+;;(require 'init-sessions)
 (require 'init-shell)
 (require 'init-snippets)
 (require 'init-tabs)
