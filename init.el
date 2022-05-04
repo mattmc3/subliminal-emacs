@@ -52,12 +52,17 @@
 ;;; Package Management
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
+;; local vars
+;; https://emacs.stackexchange.com/questions/28/safe-way-to-enable-local-variables
+(setq enable-local-variables :safe)
+
 ;; first
 (require 'init-const)
 (require 'init-package)
 
 ;; other includes
 (require 'init-commenting)
+(require 'init-dired)
 (require 'init-editing-utils)
 (require 'init-treeview)
 (require 'init-fish)
