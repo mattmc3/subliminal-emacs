@@ -18,6 +18,14 @@
 ;; `C-h k':           will provide help for a key sequence
 ;; `C-xC-e':          execute the current buffer
 
+;;; Code
+
+;; Profile emacs startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "Emacs loaded in %s."
+                     (emacs-init-time))))
+
 ;; Speed up startup
 (setq auto-mode-case-fold nil)
 
