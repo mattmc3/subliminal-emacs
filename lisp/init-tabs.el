@@ -20,7 +20,8 @@
         centaur-tabs-set-modified-marker t
         centaur-tabs-modified-marker "*")
   :config
-  (centaur-tabs-mode t))
+  (centaur-tabs-mode t)
+  (centaur-tabs-group-by-projectile-project))
 
 ;; Centaur tabs is nice
 (global-set-key (kbd "C-<prior>")  'centaur-tabs-backward)
