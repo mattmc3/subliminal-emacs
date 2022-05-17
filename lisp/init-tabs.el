@@ -8,6 +8,11 @@
 
 ;;; Code:
 
+;; We can use built-in tabs
+;; (global-tab-line-mode 1)
+
+;; Or we can use the excellent centaur-tabs package
+
 (use-package centaur-tabs
   :init
   (setq centaur-tabs-set-icons t
