@@ -39,6 +39,9 @@
 (setq global-auto-revert-non-file-buffers t
       auto-revert-verbose nil)
 
+;; try this to prevent new splits
+(setq pop-up-windows nil)
+
 ;; In the old days ESC was used as a prefix key, but I want ESC to act like it
 ;; does everywhere else on my system and, you know, escape from things. So
 ;; I've remapped ESC to `keyboard-quit'.
