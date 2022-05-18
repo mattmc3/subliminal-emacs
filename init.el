@@ -59,6 +59,7 @@
 ;; first
 (require 'init-const)
 (require 'init-package)
+(require 'init-startup)
 
 ;; other includes
 (require 'init-commenting)
@@ -68,12 +69,13 @@
 (require 'init-fish)
 (require 'init-git)
 (require 'init-lisp)
-(require 'init-lsp)
+;;(require 'init-lsp)
 (require 'init-minibuffer)
 (require 'init-misc)
 (require 'init-multiple-cursors)
+(require 'init-org)
 (require 'init-projectile)
-(require 'init-python)
+;;(require 'init-python)
 (require 'init-recentf)
 (require 'init-scrolling)
 ;;(require 'init-sessions)
