@@ -15,6 +15,7 @@
 - Emacs is your editor, use it your way!
 
 * Reference configs
+- [[https://github.com/rougier/dotemacs][Rougier dotemacs]]
 - [[https://github.com/purcell/emacs.d][Purcell]]
 - [[https://github.com/natecox/dotfiles/tree/master/emacs/.emacs.d][Nate Cox]]
 - [[https://github.com/frap/emacs-literate/blob/master/readme.org][frap]]
