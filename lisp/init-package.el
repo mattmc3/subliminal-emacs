@@ -27,6 +27,7 @@
 (straight-use-package 'use-package)
 
 (setq straight-use-package-by-default t
-      use-package-always-ensure t)
+      use-package-always-ensure t
+      straight-check-for-modifications nil)
 
 (provide 'init-package)
