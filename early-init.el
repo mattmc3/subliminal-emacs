@@ -51,8 +51,8 @@
 (setq default-frame-alist
       '((height . 50)
         (width . 150)
-        (left . 150)
-        (top . 150)
+        (left . 100)
+        (top . 100)
         (vertical-scroll-bars . nil)
         (horizontal-scroll-bars . nil)
         (tool-bar-lines . 0)))
