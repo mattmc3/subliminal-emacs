@@ -28,11 +28,20 @@
  scroll-preserve-screen-position 'always
  set-mark-command-repeat-pop t
  tooltip-delay 1.5
- transient-mark-mode 0
  truncate-lines t
  truncate-partial-width-windows nil
  uniquify-buffer-name-style 'forward
  word-wrap t)
+
+;;(transient-mark-mode 0)
+(defun subl/with-mark-active (&rest args)
+  "Keep mark active after command. To be used as advice AFTER any
+function that sets `deactivate-mark' to t."
+  (setq deactivate-mark nil))
+
+(advice-add 'uncomment-region :after #'subl/with-mark-active)
+(advice-add 'comment-region :after #'subl/with-mark-active)
+(advice-add 'kill-ring-save :after #'subl/with-mark-active)
 
 (add-hook 'after-init-hook 'delete-selection-mode)
 
